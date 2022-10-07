@@ -65,9 +65,14 @@
 #define TEST_RUN_INTELCPU_SELECT(q, func, ...)
 #endif
 
+#if defined(ENABLE_MKLGPU_BACKEND) || defined(ENABLE_SYCLBLAS_BACKEND)
 #ifdef ENABLE_MKLGPU_BACKEND
 #define TEST_RUN_INTELGPU_SELECT(q, func, ...) \
     func(oneapi::mkl::backend_selector<oneapi::mkl::backend::mklgpu>{ q }, __VA_ARGS__)
+#else
+#define TEST_RUN_INTELGPU_SELECT(q, func, ...) \
+    func(oneapi::mkl::backend_selector<oneapi::mkl::backend::syclblas>{ q }, __VA_ARGS__)
+#endif // ENABLE_MKLGPU_BACKEND
 #else
 #define TEST_RUN_INTELGPU_SELECT(q, func, ...)
 #endif

@@ -1,6 +1,7 @@
 #===============================================================================
 # Copyright 2020-2021 Intel Corporation
 # Copyright (C) 2022 Heidelberg University, Engineering Mathematics and Computing Lab (EMCL) and Computing Centre (URZ)
+# Copyright 2022 Codeplay Software
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,6 +55,7 @@ option(ENABLE_ROCBLAS_BACKEND "" OFF)
 option(ENABLE_CURAND_BACKEND "" OFF)
 option(ENABLE_ROCRAND_BACKEND "" OFF)
 option(ENABLE_NETLIB_BACKEND "" OFF)
+option(ENABLE_SYCLBLAS_BACKEND "" OFF)
 set(ONEMKL_SYCL_IMPLEMENTATION "dpc++" CACHE STRING "Name of the SYCL compiler")
 set(HIP_TARGETS "" CACHE STRING "Target HIP architectures")
 
@@ -72,7 +74,8 @@ if(ENABLE_MKLCPU_BACKEND
         OR ENABLE_MKLGPU_BACKEND
         OR ENABLE_CUBLAS_BACKEND
         OR ENABLE_ROCBLAS_BACKEND
-        OR ENABLE_NETLIB_BACKEND)
+        OR ENABLE_NETLIB_BACKEND
+        OR ENABLE_SYCLBLAS_BACKEND)
   list(APPEND DOMAINS_LIST "blas")
 endif()
 if(ENABLE_MKLCPU_BACKEND

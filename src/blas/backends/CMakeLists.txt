@@ -1,5 +1,6 @@
 #===============================================================================
 # Copyright 2020-2021 Intel Corporation
+# Copyright Codeplay Software
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,4 +36,8 @@ endif()
 
 if(ENABLE_ROCBLAS_BACKEND AND UNIX)
   add_subdirectory(rocblas)
+endif()
+
+if(ENABLE_SYCLBLAS_BACKEND)
+  add_subdirectory(syclblas)
 endif()

@@ -427,6 +427,30 @@ A few often-used architectures are listed below:
      - | Radeon Instinct(TM) MI 25 Accelerator
        | Radeon(TM) RX Vega 64/56 Graphics
 
+Building for SYCL-BLAS
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   # Inside <path to onemkl>
+   mkdir build && cd build
+   cmake .. -DENABLE_SYCLBLAS_BACKEND=True                    \
+            -DENABLE_MKLCPU_BACKEND=False/True                     
+            -DENABLE_NETLIB_BACKEND=False/True                  
+            -DENABLE_MKLGPU_BACKEND=False                      
+            -DENABLE_ROCBLAS_BACKEND=True                     \
+            [-DREF_BLAS_ROOT=<reference_blas_install_prefix>]   # required only for testing
+   cmake --build .
+   ctest
+   cmake --install . --prefix <path_to_install_dir>
+
+The installation directory of the SYCL-BLAS directory can be set with
+``-DSyclBLAS_DIR=<path to SYCL-BLAS directory>``.
+
+SYCL-BLAS must be built using the same SYCL compiler as is used to compile
+OneMKL. Compile SYCL-BLAS with ``-DDOUBLE_SUPPORT=ON``.
+
+
 Build Options
 ^^^^^^^^^^^^^
 
@@ -488,6 +512,10 @@ CMake.
      - ENABLE_MKLCPU_THREAD_TBB
      - True, False
      - True      
+   * - *Not Supported*
+     - ENABLE_SYCLBLAS_BACKEND
+     - True, False
+     - False      
    * - build_functional_tests
      - BUILD_FUNCTIONAL_TESTS
      - True, False
