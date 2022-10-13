@@ -448,7 +448,8 @@ The installation directory of the SYCL-BLAS directory can be set with
 ``-DSyclBLAS_DIR=<path to SYCL-BLAS directory>``.
 
 SYCL-BLAS must be built using the same SYCL compiler as is used to compile
-OneMKL. Compile SYCL-BLAS with ``-DDOUBLE_SUPPORT=ON``.
+OneMKL. Compile SYCL-BLAS with ``-DBLAS_DATA_TYPES="half;float;double"`` 
+and ``-DBLAS_INDEX_TYPES="int64_t"``.
 
 
 Build Options

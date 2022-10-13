@@ -22,6 +22,7 @@
 
 #include "sycl_blas.h"
 #include "oneapi/mkl/types.hpp"
+#include "oneapi/mkl/exceptions.hpp"
 
 #include <tuple>
 #include <utility>
@@ -58,7 +59,8 @@ struct syclblas_type;
     };
 
 DEF_SYCLBLAS_TYPE(sycl::queue, executor_t)
-DEF_SYCLBLAS_TYPE(int64_t, int32_t)
+DEF_SYCLBLAS_TYPE(int64_t, int64_t)
+DEF_SYCLBLAS_TYPE(sycl::half, sycl::half)
 DEF_SYCLBLAS_TYPE(float, float)
 DEF_SYCLBLAS_TYPE(double, double)
 DEF_SYCLBLAS_TYPE(oneapi::mkl::transpose, char)
@@ -134,18 +136,49 @@ inline auto convert_to_syclblas_type(ArgT... args) {
     return std::make_tuple(convert_to_syclblas_type(args)...);
 }
 
+/** Throw an MKL unsuppored device exception if a certain argument
+ *  type is found in the argument pack.
+ *  
+ *  @tparam CheckT is type to look for a template parameter pack.
+ *  @tparam AspectVal is the device aspect required to support CheckT.
+**/
+template <typename CheckT, sycl::aspect AspectVal>
+struct throw_if_unsupported_by_device {
+    /** Operator to throw if unsupported.
+ * 
+ *  @tparam ArgTs The argument types to check.
+ *  @param The message to include in the exception.
+ *  @param q is the sycl::queue.
+ *  @param args are the remaining args to check for CheckT in.
+**/
+    template <typename... ArgTs>
+    void operator()(const std::string& message, sycl::queue q, ArgTs... args) {
+        static constexpr bool checkTypeInPack = (std::is_same_v<CheckT, ArgTs> || ...);
+        if (checkTypeInPack) {
+            if (!q.get_info<sycl::info::queue::device>().has(AspectVal)) {
+                throw mkl::unsupported_device("blas", message,
+                                              q.get_info<sycl::info::queue::device>());
+            }
+        }
+    }
+};
+
 } // namespace detail
 
-#define CALL_SYCLBLAS_FN(syclblasFunc, ...)                        \
-    if constexpr ( is_column_major() ) {                           \
-        auto args = detail::convert_to_syclblas_type(__VA_ARGS__); \
-        auto fn = [](auto&&... targs) {                            \
-            syclblasFunc(std::forward<decltype(targs)>(targs)...); \
-        };                                                         \
-        std::apply(fn, args);                                      \
-    }                                                              \
-    else {                                                         \
-        std::runtime_error("SYCLBLAS supports column-major only"); \
+#define CALL_SYCLBLAS_FN(syclblasFunc, ...)                                                     \
+    if constexpr (is_column_major()) {                                                          \
+        detail::throw_if_unsupported_by_device<sycl::buffer<double>, sycl::aspect::fp64>{}(     \
+            " SyclBLAS function requiring fp64 support", __VA_ARGS__);                          \
+        detail::throw_if_unsupported_by_device<sycl::buffer<sycl::half>, sycl::aspect::fp16>{}( \
+            " SyclBLAS function requiring fp16 support", __VA_ARGS__);                          \
+        auto args = detail::convert_to_syclblas_type(__VA_ARGS__);                              \
+        auto fn = [](auto&&... targs) {                                                         \
+            syclblasFunc(std::forward<decltype(targs)>(targs)...);                              \
+        };                                                                                      \
+        std::apply(fn, args);                                                                   \
+    }                                                                                           \
+    else {                                                                                      \
+        throw unimplemented("blas", "SyclBLAS function", " for row-major");                     \
     }
 
 } // namespace syclblas

@@ -40,7 +40,7 @@ void gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transp
           sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb, std::complex<float> beta,
           sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for complex");
 }
 
 void gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -48,21 +48,22 @@ void gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transp
           sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, std::complex<double> beta,
           sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for complex");
 }
 
 void gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
           std::int64_t m, std::int64_t n, std::int64_t k, sycl::half alpha,
           sycl::buffer<sycl::half, 1> &a, std::int64_t lda, sycl::buffer<sycl::half, 1> &b,
           std::int64_t ldb, sycl::half beta, sycl::buffer<sycl::half, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    CALL_SYCLBLAS_FN(::blas::_gemm, queue, transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
+                     ldc);
 }
 
 void gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
           std::int64_t m, std::int64_t n, std::int64_t k, float alpha,
           sycl::buffer<sycl::half, 1> &a, std::int64_t lda, sycl::buffer<sycl::half, 1> &b,
           std::int64_t ldb, float beta, sycl::buffer<float, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for different argument data types");
 }
 
 void gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -70,21 +71,21 @@ void gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transp
           sycl::buffer<oneapi::mkl::bfloat16, 1> &a, std::int64_t lda,
           sycl::buffer<oneapi::mkl::bfloat16, 1> &b, std::int64_t ldb, float beta,
           sycl::buffer<float, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for bfloat16");
 }
 
 void symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
           std::int64_t m, std::int64_t n, float alpha, sycl::buffer<float, 1> &a, std::int64_t lda,
           sycl::buffer<float, 1> &b, std::int64_t ldb, float beta, sycl::buffer<float, 1> &c,
           std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "symm", "");
 }
 
 void symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
           std::int64_t m, std::int64_t n, double alpha, sycl::buffer<double, 1> &a,
           std::int64_t lda, sycl::buffer<double, 1> &b, std::int64_t ldb, double beta,
           sycl::buffer<double, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "symm", "");
 }
 
 void symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -92,7 +93,7 @@ void symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo up
           sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb, std::complex<float> beta,
           sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "symm", "");
 }
 
 void symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -100,7 +101,7 @@ void symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo up
           sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, std::complex<double> beta,
           sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "symm", "");
 }
 
 void hemm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -108,7 +109,7 @@ void hemm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo up
           sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb, std::complex<float> beta,
           sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "hemm", "");
 }
 
 void hemm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -116,60 +117,60 @@ void hemm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo up
           sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, std::complex<double> beta,
           sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "hemm", "");
 }
 
 void syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
           std::int64_t n, std::int64_t k, float alpha, sycl::buffer<float, 1> &a, std::int64_t lda,
           float beta, sycl::buffer<float, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk", "");
 }
 
 void syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
           std::int64_t n, std::int64_t k, double alpha, sycl::buffer<double, 1> &a,
           std::int64_t lda, double beta, sycl::buffer<double, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk", "");
 }
 
 void syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
           std::int64_t n, std::int64_t k, std::complex<float> alpha,
           sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda, std::complex<float> beta,
           sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk", "");
 }
 
 void syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
           std::int64_t n, std::int64_t k, std::complex<double> alpha,
           sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda, std::complex<double> beta,
           sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk", "");
 }
 
 void herk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
           std::int64_t n, std::int64_t k, float alpha, sycl::buffer<std::complex<float>, 1> &a,
           std::int64_t lda, float beta, sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "herk", "");
 }
 
 void herk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
           std::int64_t n, std::int64_t k, double alpha, sycl::buffer<std::complex<double>, 1> &a,
           std::int64_t lda, double beta, sycl::buffer<std::complex<double>, 1> &c,
           std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "herk", "");
 }
 
 void syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
            std::int64_t n, std::int64_t k, float alpha, sycl::buffer<float, 1> &a, std::int64_t lda,
            sycl::buffer<float, 1> &b, std::int64_t ldb, float beta, sycl::buffer<float, 1> &c,
            std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syr2k", "");
 }
 
 void syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
            std::int64_t n, std::int64_t k, double alpha, sycl::buffer<double, 1> &a,
            std::int64_t lda, sycl::buffer<double, 1> &b, std::int64_t ldb, double beta,
            sycl::buffer<double, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syr2k", "");
 }
 
 void syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -177,7 +178,7 @@ void syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::trans
            sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
            sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb, std::complex<float> beta,
            sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syr2k", "");
 }
 
 void syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -185,7 +186,7 @@ void syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::trans
            sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
            sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, std::complex<double> beta,
            sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syr2k", "");
 }
 
 void her2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -193,7 +194,7 @@ void her2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::trans
            sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
            sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb, float beta,
            sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "her2k", "");
 }
 
 void her2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -201,35 +202,35 @@ void her2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::trans
            sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
            sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, double beta,
            sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "her2k", "");
 }
 
 void trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
           oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m, std::int64_t n,
           float alpha, sycl::buffer<float, 1> &a, std::int64_t lda, sycl::buffer<float, 1> &b,
           std::int64_t ldb) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trmm", "");
 }
 
 void trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
           oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m, std::int64_t n,
           double alpha, sycl::buffer<double, 1> &a, std::int64_t lda, sycl::buffer<double, 1> &b,
           std::int64_t ldb) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trmm", "");
 }
 
 void trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
           oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m, std::int64_t n,
           std::complex<float> alpha, sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trmm", "");
 }
 
 void trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
           oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m, std::int64_t n,
           std::complex<double> alpha, sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trmm", "");
 }
 
 void trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -252,28 +253,28 @@ void trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo up
           oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m, std::int64_t n,
           std::complex<float> alpha, sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm", " for complex");
 }
 
 void trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
           oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m, std::int64_t n,
           std::complex<double> alpha, sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
           sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm", " for complex");
 }
 
 void gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose transa,
            oneapi::mkl::transpose transb, std::int64_t n, std::int64_t k, float alpha,
            sycl::buffer<float, 1> &a, std::int64_t lda, sycl::buffer<float, 1> &b, std::int64_t ldb,
            float beta, sycl::buffer<float, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemmt", "");
 }
 
 void gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose transa,
            oneapi::mkl::transpose transb, std::int64_t n, std::int64_t k, double alpha,
            sycl::buffer<double, 1> &a, std::int64_t lda, sycl::buffer<double, 1> &b,
            std::int64_t ldb, double beta, sycl::buffer<double, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemmt", "");
 }
 
 void gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose transa,
@@ -281,7 +282,7 @@ void gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::trans
            sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
            sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb, std::complex<float> beta,
            sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemmt", "");
 }
 
 void gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose transa,
@@ -289,7 +290,7 @@ void gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::trans
            std::complex<double> alpha, sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
            sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, std::complex<double> beta,
            sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemmt", "");
 }
 
 void gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -297,7 +298,7 @@ void gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::t
                float alpha, sycl::buffer<int8_t, 1> &a, std::int64_t lda, int8_t ao,
                sycl::buffer<uint8_t, 1> &b, std::int64_t ldb, uint8_t bo, float beta,
                sycl::buffer<int32_t, 1> &c, std::int64_t ldc, sycl::buffer<int32_t, 1> &co) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_bias", "");
 }
 
 void gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -305,7 +306,7 @@ void gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::t
                float alpha, sycl::buffer<int8_t, 1> &a, std::int64_t lda, int8_t ao,
                sycl::buffer<int8_t, 1> &b, std::int64_t ldb, int8_t bo, float beta,
                sycl::buffer<int32_t, 1> &c, std::int64_t ldc, sycl::buffer<int32_t, 1> &co) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_bias", "");
 }
 
 void gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -313,7 +314,7 @@ void gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::t
                float alpha, sycl::buffer<uint8_t, 1> &a, std::int64_t lda, uint8_t ao,
                sycl::buffer<int8_t, 1> &b, std::int64_t ldb, int8_t bo, float beta,
                sycl::buffer<int32_t, 1> &c, std::int64_t ldc, sycl::buffer<int32_t, 1> &co) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_bias", "");
 }
 
 void gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -321,7 +322,7 @@ void gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::t
                float alpha, sycl::buffer<uint8_t, 1> &a, std::int64_t lda, uint8_t ao,
                sycl::buffer<uint8_t, 1> &b, std::int64_t ldb, uint8_t bo, float beta,
                sycl::buffer<int32_t, 1> &c, std::int64_t ldc, sycl::buffer<int32_t, 1> &co) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_bias", "");
 }
 
 // USM APIs
@@ -330,14 +331,14 @@ sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl:
                  std::int64_t m, std::int64_t n, std::int64_t k, float alpha, const float *a,
                  std::int64_t lda, const float *b, std::int64_t ldb, float beta, float *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for USM");
 }
 
 sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
                  std::int64_t m, std::int64_t n, std::int64_t k, double alpha, const double *a,
                  std::int64_t lda, const double *b, std::int64_t ldb, double beta, double *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for USM");
 }
 
 sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -345,7 +346,7 @@ sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl:
                  const std::complex<float> *a, std::int64_t lda, const std::complex<float> *b,
                  std::int64_t ldb, std::complex<float> beta, std::complex<float> *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for USM");
 }
 
 sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -353,7 +354,7 @@ sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl:
                  const std::complex<double> *a, std::int64_t lda, const std::complex<double> *b,
                  std::int64_t ldb, std::complex<double> beta, std::complex<double> *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for USM");
 }
 
 sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -361,14 +362,14 @@ sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl:
                  const sycl::half *a, std::int64_t lda, const sycl::half *b, std::int64_t ldb,
                  sycl::half beta, sycl::half *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for USM");
 }
 
 sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
                  std::int64_t m, std::int64_t n, std::int64_t k, float alpha, const sycl::half *a,
                  std::int64_t lda, const sycl::half *b, std::int64_t ldb, float beta, float *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for USM");
 }
 
 sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -376,21 +377,21 @@ sycl::event gemm(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl:
                  const oneapi::mkl::bfloat16 *a, std::int64_t lda, const oneapi::mkl::bfloat16 *b,
                  std::int64_t ldb, float beta, float *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm", " for USM");
 }
 
 sycl::event symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
                  std::int64_t m, std::int64_t n, float alpha, const float *a, std::int64_t lda,
                  const float *b, std::int64_t ldb, float beta, float *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "symm", " for USM");
 }
 
 sycl::event symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
                  std::int64_t m, std::int64_t n, double alpha, const double *a, std::int64_t lda,
                  const double *b, std::int64_t ldb, double beta, double *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "symm", " for USM");
 }
 
 sycl::event symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -398,7 +399,7 @@ sycl::event symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::
                  const std::complex<float> *a, std::int64_t lda, const std::complex<float> *b,
                  std::int64_t ldb, std::complex<float> beta, std::complex<float> *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "symm", " for USM");
 }
 
 sycl::event symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -406,7 +407,7 @@ sycl::event symm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::
                  const std::complex<double> *a, std::int64_t lda, const std::complex<double> *b,
                  std::int64_t ldb, std::complex<double> beta, std::complex<double> *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "symm", " for USM");
 }
 
 sycl::event hemm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -414,7 +415,7 @@ sycl::event hemm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::
                  const std::complex<float> *a, std::int64_t lda, const std::complex<float> *b,
                  std::int64_t ldb, std::complex<float> beta, std::complex<float> *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "hemm", " for USM");
 }
 
 sycl::event hemm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -422,21 +423,21 @@ sycl::event hemm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::
                  const std::complex<double> *a, std::int64_t lda, const std::complex<double> *b,
                  std::int64_t ldb, std::complex<double> beta, std::complex<double> *c,
                  std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "hemm", " for USM");
 }
 
 sycl::event syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
                  std::int64_t n, std::int64_t k, float alpha, const float *a, std::int64_t lda,
                  float beta, float *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk", " for USM");
 }
 
 sycl::event syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
                  std::int64_t n, std::int64_t k, double alpha, const double *a, std::int64_t lda,
                  double beta, double *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk", " for USM");
 }
 
 sycl::event syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -444,7 +445,7 @@ sycl::event syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl:
                  const std::complex<float> *a, std::int64_t lda, std::complex<float> beta,
                  std::complex<float> *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk", " for USM");
 }
 
 sycl::event syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -452,35 +453,35 @@ sycl::event syrk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl:
                  const std::complex<double> *a, std::int64_t lda, std::complex<double> beta,
                  std::complex<double> *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk", " for USM");
 }
 
 sycl::event herk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
                  std::int64_t n, std::int64_t k, float alpha, const std::complex<float> *a,
                  std::int64_t lda, float beta, std::complex<float> *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "herk", " for USM");
 }
 
 sycl::event herk(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
                  std::int64_t n, std::int64_t k, double alpha, const std::complex<double> *a,
                  std::int64_t lda, double beta, std::complex<double> *c, std::int64_t ldc,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "herk", " for USM");
 }
 
 sycl::event syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
                   std::int64_t n, std::int64_t k, float alpha, const float *a, std::int64_t lda,
                   const float *b, std::int64_t ldb, float beta, float *c, std::int64_t ldc,
                   const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syr2k", " for USM");
 }
 
 sycl::event syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
                   std::int64_t n, std::int64_t k, double alpha, const double *a, std::int64_t lda,
                   const double *b, std::int64_t ldb, double beta, double *c, std::int64_t ldc,
                   const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syr2k", " for USM");
 }
 
 sycl::event syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -488,7 +489,7 @@ sycl::event syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl
                   const std::complex<float> *a, std::int64_t lda, const std::complex<float> *b,
                   std::int64_t ldb, std::complex<float> beta, std::complex<float> *c,
                   std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syr2k", " for USM");
 }
 
 sycl::event syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -496,7 +497,7 @@ sycl::event syr2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl
                   const std::complex<double> *a, std::int64_t lda, const std::complex<double> *b,
                   std::int64_t ldb, std::complex<double> beta, std::complex<double> *c,
                   std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syr2k", " for USM");
 }
 
 sycl::event her2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -504,7 +505,7 @@ sycl::event her2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl
                   const std::complex<float> *a, std::int64_t lda, const std::complex<float> *b,
                   std::int64_t ldb, float beta, std::complex<float> *c, std::int64_t ldc,
                   const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "her2k", " for USM");
 }
 
 sycl::event her2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -512,21 +513,21 @@ sycl::event her2k(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl
                   const std::complex<double> *a, std::int64_t lda, const std::complex<double> *b,
                   std::int64_t ldb, double beta, std::complex<double> *c, std::int64_t ldc,
                   const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "her2k", " for USM");
 }
 
 sycl::event trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
                  oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m,
                  std::int64_t n, float alpha, const float *a, std::int64_t lda, float *b,
                  std::int64_t ldb, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trmm", " for USM");
 }
 
 sycl::event trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
                  oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m,
                  std::int64_t n, double alpha, const double *a, std::int64_t lda, double *b,
                  std::int64_t ldb, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trmm", " for USM");
 }
 
 sycl::event trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -534,7 +535,7 @@ sycl::event trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::
                  std::int64_t n, std::complex<float> alpha, const std::complex<float> *a,
                  std::int64_t lda, std::complex<float> *b, std::int64_t ldb,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trmm", " for USM");
 }
 
 sycl::event trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -542,21 +543,21 @@ sycl::event trmm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::
                  std::int64_t n, std::complex<double> alpha, const std::complex<double> *a,
                  std::int64_t lda, std::complex<double> *b, std::int64_t ldb,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trmm", " for USM");
 }
 
 sycl::event trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
                  oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m,
                  std::int64_t n, float alpha, const float *a, std::int64_t lda, float *b,
                  std::int64_t ldb, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm", " for USM");
 }
 
 sycl::event trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
                  oneapi::mkl::transpose trans, oneapi::mkl::diag unit_diag, std::int64_t m,
                  std::int64_t n, double alpha, const double *a, std::int64_t lda, double *b,
                  std::int64_t ldb, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm", " for USM");
 }
 
 sycl::event trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -564,7 +565,7 @@ sycl::event trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::
                  std::int64_t n, std::complex<float> alpha, const std::complex<float> *a,
                  std::int64_t lda, std::complex<float> *b, std::int64_t ldb,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm", " for USM");
 }
 
 sycl::event trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -572,21 +573,21 @@ sycl::event trsm(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::
                  std::int64_t n, std::complex<double> alpha, const std::complex<double> *a,
                  std::int64_t lda, std::complex<double> *b, std::int64_t ldb,
                  const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm", " for USM");
 }
 
 sycl::event gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose transa,
                   oneapi::mkl::transpose transb, std::int64_t n, std::int64_t k, float alpha,
                   const float *a, std::int64_t lda, const float *b, std::int64_t ldb, float beta,
                   float *c, std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemmt", " for USM");
 }
 
 sycl::event gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose transa,
                   oneapi::mkl::transpose transb, std::int64_t n, std::int64_t k, double alpha,
                   const double *a, std::int64_t lda, const double *b, std::int64_t ldb, double beta,
                   double *c, std::int64_t ldc, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemmt", " for USM");
 }
 
 sycl::event gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose transa,
@@ -595,7 +596,7 @@ sycl::event gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl
                   const std::complex<float> *b, std::int64_t ldb, std::complex<float> beta,
                   std::complex<float> *c, std::int64_t ldc,
                   const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemmt", " for USM");
 }
 
 sycl::event gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose transa,
@@ -604,7 +605,7 @@ sycl::event gemmt(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl
                   const std::complex<double> *b, std::int64_t ldb, std::complex<double> beta,
                   std::complex<double> *c, std::int64_t ldc,
                   const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemmt", " for USM");
 }
 
 sycl::event gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -613,7 +614,7 @@ sycl::event gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa,
                       std::int64_t lda, std::int8_t ao, const std::uint8_t *b, std::int64_t ldb,
                       std::uint8_t bo, float beta, std::int32_t *c, std::int64_t ldc,
                       const std::int32_t *co, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_bias", " for USM");
 }
 
 sycl::event gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -622,7 +623,7 @@ sycl::event gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa,
                       std::int64_t lda, std::int8_t ao, const std::int8_t *b, std::int64_t ldb,
                       std::int8_t bo, float beta, std::int32_t *c, std::int64_t ldc,
                       const std::int32_t *co, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_bias", " for USM");
 }
 
 sycl::event gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -631,7 +632,7 @@ sycl::event gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa,
                       std::int64_t lda, std::uint8_t ao, const std::int8_t *b, std::int64_t ldb,
                       std::int8_t bo, float beta, std::int32_t *c, std::int64_t ldc,
                       const std::int32_t *co, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_bias", " for USM");
 }
 
 sycl::event gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -640,5 +641,5 @@ sycl::event gemm_bias(sycl::queue &queue, oneapi::mkl::transpose transa,
                       std::int64_t lda, std::uint8_t ao, const std::uint8_t *b, std::int64_t ldb,
                       std::uint8_t bo, float beta, std::int32_t *c, std::int64_t ldc,
                       const std::int32_t *co, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_bias", " for USM");
 }

@@ -23,14 +23,14 @@ void syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::
                 std::int64_t n, std::int64_t k, float alpha, sycl::buffer<float, 1> &a,
                 std::int64_t lda, std::int64_t stride_a, float beta, sycl::buffer<float, 1> &c,
                 std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", "");
 }
 
 void syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
                 std::int64_t n, std::int64_t k, double alpha, sycl::buffer<double, 1> &a,
                 std::int64_t lda, std::int64_t stride_a, double beta, sycl::buffer<double, 1> &c,
                 std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", "");
 }
 
 void syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -38,7 +38,7 @@ void syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::
                 sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda, std::int64_t stride_a,
                 std::complex<float> beta, sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc,
                 std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", "");
 }
 
 void syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::transpose trans,
@@ -46,7 +46,7 @@ void syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower, oneapi::mkl::
                 sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda, std::int64_t stride_a,
                 std::complex<double> beta, sycl::buffer<std::complex<double>, 1> &c,
                 std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", "");
 }
 
 void gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m, std::int64_t n,
@@ -54,7 +54,7 @@ void gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m
                 sycl::buffer<float, 1> &x, std::int64_t incx, std::int64_t stridex, float beta,
                 sycl::buffer<float, 1> &y, std::int64_t incy, std::int64_t stridey,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", "");
 }
 
 void gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m, std::int64_t n,
@@ -62,7 +62,7 @@ void gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m
                 sycl::buffer<double, 1> &x, std::int64_t incx, std::int64_t stridex, double beta,
                 sycl::buffer<double, 1> &y, std::int64_t incy, std::int64_t stridey,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", "");
 }
 
 void gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m, std::int64_t n,
@@ -71,7 +71,7 @@ void gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m
                 std::int64_t incx, std::int64_t stridex, std::complex<float> beta,
                 sycl::buffer<std::complex<float>, 1> &y, std::int64_t incy, std::int64_t stridey,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", "");
 }
 
 void gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m, std::int64_t n,
@@ -80,7 +80,7 @@ void gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m
                 std::int64_t incx, std::int64_t stridex, std::complex<double> beta,
                 sycl::buffer<std::complex<double>, 1> &y, std::int64_t incy, std::int64_t stridey,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", "");
 }
 
 void dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m, std::int64_t n,
@@ -88,7 +88,7 @@ void dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m
                 sycl::buffer<float, 1> &x, std::int64_t incx, std::int64_t stridex,
                 sycl::buffer<float, 1> &c, std::int64_t ldc, std::int64_t stridec,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", "");
 }
 
 void dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m, std::int64_t n,
@@ -96,7 +96,7 @@ void dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m
                 sycl::buffer<double, 1> &x, std::int64_t incx, std::int64_t stridex,
                 sycl::buffer<double, 1> &c, std::int64_t ldc, std::int64_t stridec,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", "");
 }
 
 void dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m, std::int64_t n,
@@ -104,7 +104,7 @@ void dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m
                 sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx, std::int64_t stridex,
                 sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc, std::int64_t stridec,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", "");
 }
 
 void dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m, std::int64_t n,
@@ -112,56 +112,56 @@ void dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m
                 sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx, std::int64_t stridex,
                 sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc, std::int64_t stridec,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", "");
 }
 
 void axpy_batch(sycl::queue &queue, std::int64_t n, float alpha, sycl::buffer<float, 1> &x,
                 std::int64_t incx, std::int64_t stridex, sycl::buffer<float, 1> &y,
                 std::int64_t incy, std::int64_t stridey, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", "");
 }
 
 void axpy_batch(sycl::queue &queue, std::int64_t n, double alpha, sycl::buffer<double, 1> &x,
                 std::int64_t incx, std::int64_t stridex, sycl::buffer<double, 1> &y,
                 std::int64_t incy, std::int64_t stridey, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", "");
 }
 
 void axpy_batch(sycl::queue &queue, std::int64_t n, std::complex<float> alpha,
                 sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx, std::int64_t stridex,
                 sycl::buffer<std::complex<float>, 1> &y, std::int64_t incy, std::int64_t stridey,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", "");
 }
 
 void axpy_batch(sycl::queue &queue, std::int64_t n, std::complex<double> alpha,
                 sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx, std::int64_t stridex,
                 sycl::buffer<std::complex<double>, 1> &y, std::int64_t incy, std::int64_t stridey,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", "");
 }
 void copy_batch(sycl::queue &queue, std::int64_t n, sycl::buffer<float, 1> &x, std::int64_t incx,
                 std::int64_t stridex, sycl::buffer<float, 1> &y, std::int64_t incy,
                 std::int64_t stridey, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", "");
 }
 
 void copy_batch(sycl::queue &queue, std::int64_t n, sycl::buffer<double, 1> &x, std::int64_t incx,
                 std::int64_t stridex, sycl::buffer<double, 1> &y, std::int64_t incy,
                 std::int64_t stridey, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", "");
 }
 
 void copy_batch(sycl::queue &queue, std::int64_t n, sycl::buffer<std::complex<float>, 1> &x,
                 std::int64_t incx, std::int64_t stridex, sycl::buffer<std::complex<float>, 1> &y,
                 std::int64_t incy, std::int64_t stridey, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", "");
 }
 
 void copy_batch(sycl::queue &queue, std::int64_t n, sycl::buffer<std::complex<double>, 1> &x,
                 std::int64_t incx, std::int64_t stridex, sycl::buffer<std::complex<double>, 1> &y,
                 std::int64_t incy, std::int64_t stridey, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", "");
 }
 
 void gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -181,7 +181,9 @@ void gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::
                          ldb, beta, c, ldc, batch_size, ::blas::gemm_batch_type_t::strided);
     }
     else {
-        throw std::runtime_error("Implemented in SYCL-BLAS for strides of matrix size only");
+        throw unimplemented("blas", "gemm_batch",
+                            " for strides not equal to the size of the"
+                            "input / output matrices");
     }
 }
 
@@ -202,7 +204,9 @@ void gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::
                          ldb, beta, c, ldc, batch_size, ::blas::gemm_batch_type_t::strided);
     }
     else {
-        throw std::runtime_error("Implemented in SYCL-BLAS for strides of matrix size only");
+        throw unimplemented("blas", "gemm_batch",
+                            " for strides not equal to the size of the"
+                            "input / output matrices");
     }
 }
 
@@ -212,7 +216,7 @@ void gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::
                 sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb, std::int64_t stride_b,
                 std::complex<float> beta, sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc,
                 std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for complex");
 }
 
 void gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -221,7 +225,7 @@ void gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::
                 sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, std::int64_t stride_b,
                 std::complex<double> beta, sycl::buffer<std::complex<double>, 1> &c,
                 std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for complex");
 }
 
 void gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -230,7 +234,7 @@ void gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::
                 sycl::buffer<sycl::half, 1> &b, std::int64_t ldb, std::int64_t stride_b,
                 sycl::half beta, sycl::buffer<sycl::half, 1> &c, std::int64_t ldc,
                 std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for complex");
 }
 
 void trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -238,7 +242,7 @@ void trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::u
                 std::int64_t n, float alpha, sycl::buffer<float, 1> &a, std::int64_t lda,
                 std::int64_t stride_a, sycl::buffer<float, 1> &b, std::int64_t ldb,
                 std::int64_t stride_b, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", "");
 }
 
 void trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -246,7 +250,7 @@ void trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::u
                 std::int64_t n, double alpha, sycl::buffer<double, 1> &a, std::int64_t lda,
                 std::int64_t stride_a, sycl::buffer<double, 1> &b, std::int64_t ldb,
                 std::int64_t stride_b, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", "");
 }
 
 void trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -254,7 +258,7 @@ void trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::u
                 std::int64_t n, std::complex<float> alpha, sycl::buffer<std::complex<float>, 1> &a,
                 std::int64_t lda, std::int64_t stride_a, sycl::buffer<std::complex<float>, 1> &b,
                 std::int64_t ldb, std::int64_t stride_b, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", "");
 }
 
 void trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::uplo upper_lower,
@@ -263,21 +267,21 @@ void trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right, oneapi::mkl::u
                 sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda, std::int64_t stride_a,
                 sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, std::int64_t stride_b,
                 std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", "");
 }
 
 void omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                     std::int64_t n, float alpha, sycl::buffer<float, 1> &a, std::int64_t lda,
                     std::int64_t stride_a, sycl::buffer<float, 1> &b, std::int64_t ldb,
                     std::int64_t stride_b, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatcopy_batch", "");
 }
 
 void omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                     std::int64_t n, double alpha, sycl::buffer<double, 1> &a, std::int64_t lda,
                     std::int64_t stride_a, sycl::buffer<double, 1> &b, std::int64_t ldb,
                     std::int64_t stride_b, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatcopy_batch", "");
 }
 
 void omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -285,7 +289,7 @@ void omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64
                     sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
                     std::int64_t stride_a, sycl::buffer<std::complex<float>, 1> &b,
                     std::int64_t ldb, std::int64_t stride_b, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatcopy_batch", "");
 }
 
 void omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -293,33 +297,33 @@ void omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64
                     sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
                     std::int64_t stride_a, sycl::buffer<std::complex<double>, 1> &b,
                     std::int64_t ldb, std::int64_t stride_b, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatcopy_batch", "");
 }
 
 void imatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                     std::int64_t n, float alpha, sycl::buffer<float, 1> &ab, std::int64_t lda,
                     std::int64_t ldb, std::int64_t stride, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "imatcopy_batch", "");
 }
 
 void imatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                     std::int64_t n, double alpha, sycl::buffer<double, 1> &ab, std::int64_t lda,
                     std::int64_t ldb, std::int64_t stride, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "imatcopy_batch", "");
 }
 
 void imatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                     std::int64_t n, std::complex<float> alpha,
                     sycl::buffer<std::complex<float>, 1> &ab, std::int64_t lda, std::int64_t ldb,
                     std::int64_t stride, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "imatcopy_batch", "");
 }
 
 void imatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                     std::int64_t n, std::complex<double> alpha,
                     sycl::buffer<std::complex<double>, 1> &ab, std::int64_t lda, std::int64_t ldb,
                     std::int64_t stride, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "imatcopy_batch", "");
 }
 
 void omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -327,7 +331,7 @@ void omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mk
                    std::int64_t lda, std::int64_t stride_a, float beta, sycl::buffer<float, 1> &b,
                    std::int64_t ldb, std::int64_t stride_b, sycl::buffer<float, 1> &c,
                    std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatadd_batch", "");
 }
 
 void omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -335,7 +339,7 @@ void omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mk
                    std::int64_t lda, std::int64_t stride_a, double beta, sycl::buffer<double, 1> &b,
                    std::int64_t ldb, std::int64_t stride_b, sycl::buffer<double, 1> &c,
                    std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatadd_batch", "");
 }
 
 void omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -344,7 +348,7 @@ void omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mk
                    std::complex<float> beta, sycl::buffer<std::complex<float>, 1> &b,
                    std::int64_t ldb, std::int64_t stride_b, sycl::buffer<std::complex<float>, 1> &c,
                    std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatadd_batch", "");
 }
 
 void omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
@@ -354,7 +358,7 @@ void omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mk
                    sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb,
                    std::int64_t stride_b, sycl::buffer<std::complex<double>, 1> &c,
                    std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatadd_batch", "");
 }
 
 // USM APIs
@@ -364,7 +368,7 @@ sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo *upper_lower,
                        float *alpha, const float **a, std::int64_t *lda, float *beta, float **c,
                        std::int64_t *ldc, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", " for USM");
 }
 
 sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo *upper_lower,
@@ -372,7 +376,7 @@ sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo *upper_lower,
                        double *alpha, const double **a, std::int64_t *lda, double *beta, double **c,
                        std::int64_t *ldc, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", " for USM");
 }
 
 sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo *upper_lower,
@@ -381,7 +385,7 @@ sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo *upper_lower,
                        std::complex<float> *beta, std::complex<float> **c, std::int64_t *ldc,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", " for USM");
 }
 
 sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo *upper_lower,
@@ -390,7 +394,7 @@ sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo *upper_lower,
                        std::int64_t *lda, std::complex<double> *beta, std::complex<double> **c,
                        std::int64_t *ldc, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", " for USM");
 }
 
 sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower,
@@ -398,7 +402,7 @@ sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower,
                        const float *a, std::int64_t lda, std::int64_t stride_a, float beta,
                        float *c, std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", " for USM");
 }
 
 sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower,
@@ -406,7 +410,7 @@ sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower,
                        const double *a, std::int64_t lda, std::int64_t stride_a, double beta,
                        double *c, std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", " for USM");
 }
 
 sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower,
@@ -415,7 +419,7 @@ sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower,
                        std::int64_t stride_a, std::complex<float> beta, std::complex<float> *c,
                        std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", " for USM");
 }
 
 sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower,
@@ -424,7 +428,7 @@ sycl::event syrk_batch(sycl::queue &queue, oneapi::mkl::uplo upper_lower,
                        std::int64_t stride_a, std::complex<double> beta, std::complex<double> *c,
                        std::int64_t ldc, std::int64_t stride_c, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "syrk_batch", " for USM");
 }
 
 sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -433,7 +437,7 @@ sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::in
                        std::int64_t stridex, float beta, float *y, std::int64_t incy,
                        std::int64_t stridey, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", " for USM");
 }
 
 sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -442,7 +446,7 @@ sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::in
                        std::int64_t stridex, double beta, double *y, std::int64_t incy,
                        std::int64_t stridey, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", " for USM");
 }
 
 sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -451,7 +455,7 @@ sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::in
                        std::int64_t incx, std::int64_t stridex, std::complex<float> beta,
                        std::complex<float> *y, std::int64_t incy, std::int64_t stridey,
                        std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", " for USM");
 }
 
 sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -460,7 +464,7 @@ sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::in
                        std::int64_t incx, std::int64_t stridex, std::complex<double> beta,
                        std::complex<double> *y, std::int64_t incy, std::int64_t stridey,
                        std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", " for USM");
 }
 
 sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose *trans, std::int64_t *m,
@@ -468,7 +472,7 @@ sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose *trans, std::i
                        const float **x, std::int64_t *incx, float *beta, float **y,
                        std::int64_t *incy, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", " for USM");
 }
 
 sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose *trans, std::int64_t *m,
@@ -476,7 +480,7 @@ sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose *trans, std::i
                        const double **x, std::int64_t *incx, double *beta, double **y,
                        std::int64_t *incy, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", " for USM");
 }
 
 sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose *trans, std::int64_t *m,
@@ -485,7 +489,7 @@ sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose *trans, std::i
                        std::complex<float> *beta, std::complex<float> **y, std::int64_t *incy,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", " for USM");
 }
 
 sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose *trans, std::int64_t *m,
@@ -494,7 +498,7 @@ sycl::event gemv_batch(sycl::queue &queue, oneapi::mkl::transpose *trans, std::i
                        std::complex<double> *beta, std::complex<double> **y, std::int64_t *incy,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemv_batch", " for USM");
 }
 
 sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m,
@@ -502,7 +506,7 @@ sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::in
                        const float *x, std::int64_t incx, std::int64_t stridex, float *c,
                        std::int64_t ldc, std::int64_t stridec, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", " for USM");
 }
 
 sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m,
@@ -510,7 +514,7 @@ sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::in
                        const double *x, std::int64_t incx, std::int64_t stridex, double *c,
                        std::int64_t ldc, std::int64_t stridec, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", " for USM");
 }
 
 sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m,
@@ -519,7 +523,7 @@ sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::in
                        std::int64_t stridex, std::complex<float> *c, std::int64_t ldc,
                        std::int64_t stridec, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", " for USM");
 }
 
 sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::int64_t m,
@@ -528,21 +532,21 @@ sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side left_right, std::in
                        std::int64_t stridex, std::complex<double> *c, std::int64_t ldc,
                        std::int64_t stridec, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", " for USM");
 }
 
 sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side *left_right, std::int64_t *m,
                        std::int64_t *n, const float **a, std::int64_t *lda, const float **x,
                        std::int64_t *incx, float **c, std::int64_t *ldc, std::int64_t group_count,
                        std::int64_t *group_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", " for USM");
 }
 
 sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side *left_right, std::int64_t *m,
                        std::int64_t *n, const double **a, std::int64_t *lda, const double **x,
                        std::int64_t *incx, double **c, std::int64_t *ldc, std::int64_t group_count,
                        std::int64_t *group_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", " for USM");
 }
 
 sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side *left_right, std::int64_t *m,
@@ -550,7 +554,7 @@ sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side *left_right, std::i
                        const std::complex<float> **x, std::int64_t *incx, std::complex<float> **c,
                        std::int64_t *ldc, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", " for USM");
 }
 
 sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side *left_right, std::int64_t *m,
@@ -558,113 +562,113 @@ sycl::event dgmm_batch(sycl::queue &queue, oneapi::mkl::side *left_right, std::i
                        const std::complex<double> **x, std::int64_t *incx, std::complex<double> **c,
                        std::int64_t *ldc, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "dgmm_batch", " for USM");
 }
 
 sycl::event axpy_batch(sycl::queue &queue, std::int64_t *n, float *alpha, const float **x,
                        std::int64_t *incx, float **y, std::int64_t *incy, std::int64_t group_count,
                        std::int64_t *group_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", " for USM");
 }
 
 sycl::event axpy_batch(sycl::queue &queue, std::int64_t *n, double *alpha, const double **x,
                        std::int64_t *incx, double **y, std::int64_t *incy, std::int64_t group_count,
                        std::int64_t *group_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", " for USM");
 }
 
 sycl::event axpy_batch(sycl::queue &queue, std::int64_t *n, std::complex<float> *alpha,
                        const std::complex<float> **x, std::int64_t *incx, std::complex<float> **y,
                        std::int64_t *incy, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", " for USM");
 }
 
 sycl::event axpy_batch(sycl::queue &queue, std::int64_t *n, std::complex<double> *alpha,
                        const std::complex<double> **x, std::int64_t *incx, std::complex<double> **y,
                        std::int64_t *incy, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", " for USM");
 }
 
 sycl::event axpy_batch(sycl::queue &queue, std::int64_t n, float alpha, const float *x,
                        std::int64_t incx, std::int64_t stridex, float *y, std::int64_t incy,
                        std::int64_t stridey, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", " for USM");
 }
 
 sycl::event axpy_batch(sycl::queue &queue, std::int64_t n, double alpha, const double *x,
                        std::int64_t incx, std::int64_t stridex, double *y, std::int64_t incy,
                        std::int64_t stridey, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", " for USM");
 }
 
 sycl::event axpy_batch(sycl::queue &queue, std::int64_t n, std::complex<float> alpha,
                        const std::complex<float> *x, std::int64_t incx, std::int64_t stridex,
                        std::complex<float> *y, std::int64_t incy, std::int64_t stridey,
                        std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", " for USM");
 }
 
 sycl::event axpy_batch(sycl::queue &queue, std::int64_t n, std::complex<double> alpha,
                        const std::complex<double> *x, std::int64_t incx, std::int64_t stridex,
                        std::complex<double> *y, std::int64_t incy, std::int64_t stridey,
                        std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "axpy_batch", " for USM");
 }
 
 sycl::event copy_batch(sycl::queue &queue, std::int64_t *n, const float **x, std::int64_t *incx,
                        float **y, std::int64_t *incy, std::int64_t group_count,
                        std::int64_t *group_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", " for USM");
 }
 
 sycl::event copy_batch(sycl::queue &queue, std::int64_t *n, const double **x, std::int64_t *incx,
                        double **y, std::int64_t *incy, std::int64_t group_count,
                        std::int64_t *group_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", " for USM");
 }
 
 sycl::event copy_batch(sycl::queue &queue, std::int64_t *n, const std::complex<float> **x,
                        std::int64_t *incx, std::complex<float> **y, std::int64_t *incy,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", " for USM");
 }
 
 sycl::event copy_batch(sycl::queue &queue, std::int64_t *n, const std::complex<double> **x,
                        std::int64_t *incx, std::complex<double> **y, std::int64_t *incy,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", " for USM");
 }
 
 sycl::event copy_batch(sycl::queue &queue, std::int64_t n, const float *x, std::int64_t incx,
                        std::int64_t stridex, float *y, std::int64_t incy, std::int64_t stridey,
                        std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", " for USM");
 }
 
 sycl::event copy_batch(sycl::queue &queue, std::int64_t n, const double *x, std::int64_t incx,
                        std::int64_t stridex, double *y, std::int64_t incy, std::int64_t stridey,
                        std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", " for USM");
 }
 
 sycl::event copy_batch(sycl::queue &queue, std::int64_t n, const std::complex<float> *x,
                        std::int64_t incx, std::int64_t stridex, std::complex<float> *y,
                        std::int64_t incy, std::int64_t stridey, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", " for USM");
 }
 
 sycl::event copy_batch(sycl::queue &queue, std::int64_t n, const std::complex<double> *x,
                        std::int64_t incx, std::int64_t stridex, std::complex<double> *y,
                        std::int64_t incy, std::int64_t stridey, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "copy_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
@@ -673,7 +677,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
                        const float **b, std::int64_t *ldb, float *beta, float **c,
                        std::int64_t *ldc, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
@@ -682,7 +686,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
                        const double **b, std::int64_t *ldb, double *beta, double **c,
                        std::int64_t *ldc, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
@@ -692,7 +696,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
                        std::complex<float> *beta, std::complex<float> **c, std::int64_t *ldc,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
@@ -702,7 +706,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
                        std::complex<double> *beta, std::complex<double> **c, std::int64_t *ldc,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
@@ -711,7 +715,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose *transa,
                        const sycl::half **b, std::int64_t *ldb, sycl::half *beta, sycl::half **c,
                        std::int64_t *ldc, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -721,7 +725,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                        std::int64_t stride_b, float beta, float *c, std::int64_t ldc,
                        std::int64_t stride_c, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -731,7 +735,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                        std::int64_t stride_b, double beta, double *c, std::int64_t ldc,
                        std::int64_t stride_c, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -741,7 +745,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                        std::int64_t ldb, std::int64_t stride_b, std::complex<float> beta,
                        std::complex<float> *c, std::int64_t ldc, std::int64_t stride_c,
                        std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -751,7 +755,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                        std::int64_t ldb, std::int64_t stride_b, std::complex<double> beta,
                        std::complex<double> *c, std::int64_t ldc, std::int64_t stride_c,
                        std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -761,7 +765,7 @@ sycl::event gemm_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                        std::int64_t stride_b, sycl::half beta, sycl::half *c, std::int64_t ldc,
                        std::int64_t stride_c, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "gemm_batch", " for USM");
 }
 
 sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right,
@@ -770,7 +774,7 @@ sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right,
                        const float *a, std::int64_t lda, std::int64_t stride_a, float *b,
                        std::int64_t ldb, std::int64_t stride_b, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", " for USM");
 }
 
 sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right,
@@ -779,7 +783,7 @@ sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right,
                        const double *a, std::int64_t lda, std::int64_t stride_a, double *b,
                        std::int64_t ldb, std::int64_t stride_b, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", " for USM");
 }
 
 sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right,
@@ -789,7 +793,7 @@ sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right,
                        std::int64_t stride_a, std::complex<float> *b, std::int64_t ldb,
                        std::int64_t stride_b, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", " for USM");
 }
 
 sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right,
@@ -799,7 +803,7 @@ sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side left_right,
                        std::int64_t stride_a, std::complex<double> *b, std::int64_t ldb,
                        std::int64_t stride_b, std::int64_t batch_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", " for USM");
 }
 
 sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side *left_right,
@@ -808,7 +812,7 @@ sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side *left_right,
                        const float **a, std::int64_t *lda, float **b, std::int64_t *ldb,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", " for USM");
 }
 
 sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side *left_right,
@@ -817,7 +821,7 @@ sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side *left_right,
                        double *alpha, const double **a, std::int64_t *lda, double **b,
                        std::int64_t *ldb, std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", " for USM");
 }
 
 sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side *left_right,
@@ -826,7 +830,7 @@ sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side *left_right,
                        std::complex<float> *alpha, const std::complex<float> **a, std::int64_t *lda,
                        std::complex<float> **b, std::int64_t *ldb, std::int64_t group_count,
                        std::int64_t *group_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", " for USM");
 }
 
 sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side *left_right,
@@ -836,14 +840,14 @@ sycl::event trsm_batch(sycl::queue &queue, oneapi::mkl::side *left_right,
                        std::int64_t *lda, std::complex<double> **b, std::int64_t *ldb,
                        std::int64_t group_count, std::int64_t *group_size,
                        const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "trsm_batch", " for USM");
 }
 
 sycl::event omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                            std::int64_t n, float alpha, const float *a, std::int64_t lda,
                            std::int64_t stride_a, float *b, std::int64_t ldb, std::int64_t stride_b,
                            std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatcopy_batch", " for USM");
 }
 
 sycl::event omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -851,7 +855,7 @@ sycl::event omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std
                            std::int64_t stride_a, double *b, std::int64_t ldb,
                            std::int64_t stride_b, std::int64_t batch_size,
                            const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatcopy_batch", " for USM");
 }
 
 sycl::event omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -859,7 +863,7 @@ sycl::event omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std
                            std::int64_t lda, std::int64_t stride_a, std::complex<float> *b,
                            std::int64_t ldb, std::int64_t stride_b, std::int64_t batch_size,
                            const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatcopy_batch", " for USM");
 }
 
 sycl::event omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
@@ -867,35 +871,35 @@ sycl::event omatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std
                            const std::complex<double> *a, std::int64_t lda, std::int64_t stride_a,
                            std::complex<double> *b, std::int64_t ldb, std::int64_t stride_b,
                            std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatcopy_batch", " for USM");
 }
 
 sycl::event imatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                            std::int64_t n, float alpha, float *ab, std::int64_t lda,
                            std::int64_t ldb, std::int64_t stride, std::int64_t batch_size,
                            const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "imatcopy_batch", " for USM");
 }
 
 sycl::event imatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                            std::int64_t n, double alpha, double *ab, std::int64_t lda,
                            std::int64_t ldb, std::int64_t stride, std::int64_t batch_size,
                            const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "imatcopy_batch", " for USM");
 }
 
 sycl::event imatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                            std::int64_t n, std::complex<float> alpha, std::complex<float> *ab,
                            std::int64_t lda, std::int64_t ldb, std::int64_t stride,
                            std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "imatcopy_batch", " for USM");
 }
 
 sycl::event imatcopy_batch(sycl::queue &queue, oneapi::mkl::transpose trans, std::int64_t m,
                            std::int64_t n, std::complex<double> alpha, std::complex<double> *ab,
                            std::int64_t lda, std::int64_t ldb, std::int64_t stride,
                            std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "imatcopy_batch", " for USM");
 }
 
 sycl::event omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -904,7 +908,7 @@ sycl::event omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                           float beta, const float *b, std::int64_t ldb, std::int64_t stride_b,
                           float *c, std::int64_t ldc, std::int64_t stride_c,
                           std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatadd_batch", " for USM");
 }
 
 sycl::event omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -913,7 +917,7 @@ sycl::event omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                           double beta, const double *b, std::int64_t ldb, std::int64_t stride_b,
                           double *c, std::int64_t ldc, std::int64_t stride_c,
                           std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatadd_batch", " for USM");
 }
 
 sycl::event omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -923,7 +927,7 @@ sycl::event omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                           const std::complex<float> *b, std::int64_t ldb, std::int64_t stride_b,
                           std::complex<float> *c, std::int64_t ldc, std::int64_t stride_c,
                           std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatadd_batch", " for USM");
 }
 
 sycl::event omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
@@ -933,5 +937,5 @@ sycl::event omatadd_batch(sycl::queue &queue, oneapi::mkl::transpose transa,
                           const std::complex<double> *b, std::int64_t ldb, std::int64_t stride_b,
                           std::complex<double> *c, std::int64_t ldc, std::int64_t stride_c,
                           std::int64_t batch_size, const std::vector<sycl::event> &dependencies) {
-    throw std::runtime_error("Not implemented for syclblas");
+    throw unimplemented("blas", "omatadd_batch", " for USM");
 }
