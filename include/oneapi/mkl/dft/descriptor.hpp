@@ -27,17 +27,21 @@
 #endif
 
 #include "oneapi/mkl/types.hpp"
+#include "oneapi/mkl/dft/types.hpp"
+#include "oneapi/mkl/detail/backend_selector.hpp"
 
-namespace oneapi::mkl::dft {
+#include "oneapi/mkl/dft/detail/commit_impl.hpp"
 
-template <oneapi::mkl::dft::precision prec, oneapi::mkl::dft::domain dom>
+namespace oneapi {
+namespace mkl {
+namespace dft {
+
+template <precision prec, domain dom>
 class descriptor {
-private:
-    sycl::queue queue_;
-
 public:
     // Syntax for 1-dimensional DFT
     descriptor(std::int64_t length);
+
     // Syntax for d-dimensional DFT
     descriptor(std::vector<std::int64_t> dimensions);
 
@@ -49,10 +53,31 @@ public:
 
     void commit(sycl::queue& queue);
 
-    sycl::queue& get_queue() {
-        return queue_;
-    };
+#ifdef ENABLE_MKLCPU_BACKEND
+    void commit(backend_selector<backend::mklcpu> selector);
+#endif
+
+#ifdef ENABLE_MKLGPU_BACKEND
+    void commit(backend_selector<backend::mklgpu> selector);
+#endif
+    
+    sycl::queue& get_queue() { return queue_; };
+    dft_values get_values() { return values_; };
+private:
+    std::unique_ptr<detail::commit_impl> pimpl_; // commit only
+    sycl::queue queue_;
+
+    std::int64_t rank_;
+    std::vector<std::int64_t>  dimensions_;
+    
+
+    // descriptor configuration values_ and structs
+    oneapi::mkl::dft::dft_values values_;
 };
-} // namespace oneapi::mkl::dft
+
+} //namespace dft
+} //namespace mkl
+} //namespace oneapi
+
 
 #endif // _ONEMKL_DFT_DESCRIPTOR_HPP_

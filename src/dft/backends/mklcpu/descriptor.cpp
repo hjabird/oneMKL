@@ -20,22 +20,22 @@
 #include "oneapi/mkl/dft/descriptor.hpp"
 #include "../../descriptor.cxx"
 
-#include "oneapi/mkl/dft/detail/mklgpu/onemkl_dft_mklgpu.hpp"
+#include "oneapi/mkl/dft/detail/mklcpu/onemkl_dft_mklcpu.hpp"
 
 namespace oneapi {
 namespace mkl {
 namespace dft {
 
 template <precision prec, domain dom>
-void descriptor<prec, dom>::commit(backend_selector<backend::mklgpu> selector) {
+void descriptor<prec, dom>::commit(backend_selector<backend::mklcpu> selector) {
     queue_ = selector.get_queue();
-    pimpl_.reset(mklgpu::create_commit(*this));
+    pimpl_.reset(mklcpu::create_commit(*this));
 }
 
-template void descriptor<precision::SINGLE, domain::COMPLEX>::commit(backend_selector<backend::mklgpu>);
-template void descriptor<precision::SINGLE, domain::REAL>::commit(backend_selector<backend::mklgpu>);
-template void descriptor<precision::DOUBLE, domain::COMPLEX>::commit(backend_selector<backend::mklgpu>);
-template void descriptor<precision::DOUBLE, domain::REAL>::commit(backend_selector<backend::mklgpu>);
+template void descriptor<precision::SINGLE, domain::COMPLEX>::commit(backend_selector<backend::mklcpu>);
+template void descriptor<precision::SINGLE, domain::REAL>::commit(backend_selector<backend::mklcpu>);
+template void descriptor<precision::DOUBLE, domain::COMPLEX>::commit(backend_selector<backend::mklcpu>);
+template void descriptor<precision::DOUBLE, domain::REAL>::commit(backend_selector<backend::mklcpu>);
 
 } //namespace dft
 } //namespace mkl

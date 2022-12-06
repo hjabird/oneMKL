@@ -17,23 +17,15 @@
 * SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
-#ifndef _ONEMKL_DFT_HPP_
-#define _ONEMKL_DFT_HPP_
+#include "oneapi/mkl/dft/detail/mklcpu/onemkl_dft_mklcpu.hpp"
+#include "dft/function_table.hpp"
 
-#if __has_include(<sycl/sycl.hpp>)
-#include <sycl/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
-#include <complex>
-#include <cstdint>
+#define WRAPPER_VERSION 1
 
-#include "oneapi/mkl/detail/config.hpp"
-#include "oneapi/mkl/detail/get_device_id.hpp"
-#include "oneapi/mkl/dft/detail/dft_loader.hpp"
-
-#include "oneapi/mkl/dft/descriptor.hpp"
-#include "oneapi/mkl/dft/forward.hpp"
-#include "oneapi/mkl/dft/backward.hpp"
-
-#endif // _ONEMKL_DFT_HPP_
+extern "C" dft_function_table_t mkl_dft_table = {
+    WRAPPER_VERSION,
+    oneapi::mkl::dft::mklcpu::create_commit,
+    oneapi::mkl::dft::mklcpu::create_commit,
+    oneapi::mkl::dft::mklcpu::create_commit,
+    oneapi::mkl::dft::mklcpu::create_commit
+};

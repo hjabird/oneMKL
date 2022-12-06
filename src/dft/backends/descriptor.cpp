@@ -17,23 +17,25 @@
 * SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
-#ifndef _ONEMKL_DFT_HPP_
-#define _ONEMKL_DFT_HPP_
-
-#if __has_include(<sycl/sycl.hpp>)
-#include <sycl/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
-#include <complex>
-#include <cstdint>
-
-#include "oneapi/mkl/detail/config.hpp"
-#include "oneapi/mkl/detail/get_device_id.hpp"
+#include "oneapi/mkl/dft/descriptor.hpp"
 #include "oneapi/mkl/dft/detail/dft_loader.hpp"
 
-#include "oneapi/mkl/dft/descriptor.hpp"
-#include "oneapi/mkl/dft/forward.hpp"
-#include "oneapi/mkl/dft/backward.hpp"
+#include "../descriptor.cxx"
 
-#endif // _ONEMKL_DFT_HPP_
+namespace oneapi {
+namespace mkl {
+namespace dft {
+
+template <precision prec, domain dom>
+void descriptor<prec, dom>::commit(sycl::queue &queue) {
+    queue_ = queue;
+    pimpl_.reset(detail::create_commit(*this));
+}
+template void descriptor<precision::SINGLE, domain::COMPLEX>::commit(sycl::queue &);
+template void descriptor<precision::SINGLE, domain::REAL>::commit(sycl::queue &);
+template void descriptor<precision::DOUBLE, domain::COMPLEX>::commit(sycl::queue &);
+template void descriptor<precision::DOUBLE, domain::REAL>::commit(sycl::queue &);
+
+} //namespace dft
+} //namespace mkl
+} //namespace oneapi

@@ -17,23 +17,34 @@
 * SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
-#ifndef _ONEMKL_DFT_HPP_
-#define _ONEMKL_DFT_HPP_
+#ifndef _ONEMKL_DFT_MKLCPU_HPP_
+#define _ONEMKL_DFT_MKLCPU_HPP_
 
+#include <cstdint>
 #if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
 #else
 #include <CL/sycl.hpp>
 #endif
-#include <complex>
-#include <cstdint>
 
-#include "oneapi/mkl/detail/config.hpp"
-#include "oneapi/mkl/detail/get_device_id.hpp"
-#include "oneapi/mkl/dft/detail/dft_loader.hpp"
+#include "oneapi/mkl/detail/export.hpp"
 
+#include "oneapi/mkl/types.hpp"
+#include "oneapi/mkl/dft/types.hpp"
 #include "oneapi/mkl/dft/descriptor.hpp"
-#include "oneapi/mkl/dft/forward.hpp"
-#include "oneapi/mkl/dft/backward.hpp"
 
-#endif // _ONEMKL_DFT_HPP_
+namespace oneapi {
+namespace mkl {
+namespace dft {
+namespace mklcpu {
+
+template<oneapi::mkl::dft::precision prec, oneapi::mkl::dft::domain dom>
+ONEMKL_EXPORT oneapi::mkl::dft::detail::commit_impl* create_commit(
+    oneapi::mkl::dft::descriptor<prec, dom>& desc);
+
+} // namespace mklcpu
+} // namespace dft
+} // namespace mkl
+} // namespace oneapi
+
+#endif // _ONEMKL_DFT_MKLCPU_HPP_

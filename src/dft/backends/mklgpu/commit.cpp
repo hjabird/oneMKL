@@ -17,23 +17,35 @@
 * SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
-#ifndef _ONEMKL_DFT_HPP_
-#define _ONEMKL_DFT_HPP_
-
 #if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
 #else
 #include <CL/sycl.hpp>
 #endif
-#include <complex>
-#include <cstdint>
 
-#include "oneapi/mkl/detail/config.hpp"
-#include "oneapi/mkl/detail/get_device_id.hpp"
-#include "oneapi/mkl/dft/detail/dft_loader.hpp"
+#include "oneapi/mkl/types.hpp"
 
-#include "oneapi/mkl/dft/descriptor.hpp"
-#include "oneapi/mkl/dft/forward.hpp"
-#include "oneapi/mkl/dft/backward.hpp"
+#include "oneapi/mkl/dft/detail/mklgpu/onemkl_dft_mklgpu.hpp"
 
-#endif // _ONEMKL_DFT_HPP_
+namespace oneapi {
+namespace mkl {
+namespace dft {
+namespace mklgpu {
+
+void commit_f(descriptor<precision::SINGLE, domain::REAL> &desc, sycl::queue &queue) {
+    throw std::runtime_error("Not implemented for mklgpu");
+}
+void commit_c(descriptor<precision::SINGLE, domain::COMPLEX> &desc, sycl::queue &queue) {
+    throw std::runtime_error("Not implemented for mklgpu");
+}
+void commit_d(descriptor<precision::DOUBLE, domain::REAL> &desc, sycl::queue &queue) {
+    throw std::runtime_error("Not implemented for mklgpu");
+}
+void commit_z(descriptor<precision::DOUBLE, domain::COMPLEX> &desc, sycl::queue &queue) {
+    throw std::runtime_error("Not implemented for mklgpu");
+}
+
+} // namespace mklgpu
+} // namespace dft
+} // namespace mkl
+} // namespace oneapi
