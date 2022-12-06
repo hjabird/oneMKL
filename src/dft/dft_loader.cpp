@@ -31,26 +31,30 @@ namespace detail {
 static oneapi::mkl::detail::table_initializer<mkl::domain::dft, dft_function_table_t>
     function_tables;
 
-commit_impl* create_commit(oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::SINGLE,
-                                                        oneapi::mkl::dft::domain::COMPLEX>& desc) {
+template <>
+commit_impl* create_commit<precision::SINGLE, domain::COMPLEX>(
+    descriptor<precision::SINGLE, domain::COMPLEX>& desc) {
     auto libkey = get_device_id(desc.get_queue());
     return function_tables[libkey].create_commit_sycl_fz(desc);
 }
 
-commit_impl* create_commit(oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::DOUBLE,
-                                                        oneapi::mkl::dft::domain::COMPLEX>& desc) {
+template <>
+commit_impl* create_commit<precision::DOUBLE, domain::COMPLEX>(
+    descriptor<precision::DOUBLE, domain::COMPLEX>& desc) {
     auto libkey = get_device_id(desc.get_queue());
     return function_tables[libkey].create_commit_sycl_dz(desc);
 }
 
-commit_impl* create_commit(oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::SINGLE,
-                                                        oneapi::mkl::dft::domain::REAL>& desc) {
+template <>
+commit_impl* create_commit<precision::SINGLE, domain::REAL>(
+    descriptor<precision::SINGLE, domain::REAL>& desc) {
     auto libkey = get_device_id(desc.get_queue());
     return function_tables[libkey].create_commit_sycl_fr(desc);
 }
 
-commit_impl* create_commit(oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::DOUBLE,
-                                                        oneapi::mkl::dft::domain::REAL>& desc) {
+template <>
+commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
+    descriptor<precision::DOUBLE, domain::REAL>& desc) {
     auto libkey = get_device_id(desc.get_queue());
     return function_tables[libkey].create_commit_sycl_dr(desc);
 }

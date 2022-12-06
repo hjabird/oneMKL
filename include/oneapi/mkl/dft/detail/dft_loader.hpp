@@ -20,36 +20,21 @@
 #ifndef _ONEMKL_DFT_LOADER_HPP_
 #define _ONEMKL_DFT_LOADER_HPP_
 
-#include <cstdint>
-#if __has_include(<sycl/sycl.hpp>)
-#include <sycl/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
-
 #include "oneapi/mkl/detail/export.hpp"
-
-#include "oneapi/mkl/types.hpp"
-#include "oneapi/mkl/dft/types.hpp"
-#include "oneapi/mkl/dft/detail/commit_impl.hpp"
-#include "oneapi/mkl/dft/descriptor.hpp"
+#include "oneapi/mkl/dft/detail/types_impl.hpp"
 
 namespace oneapi {
 namespace mkl {
 namespace dft {
 namespace detail {
 
-ONEMKL_EXPORT commit_impl* create_commit(oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::SINGLE,
-                                                        oneapi::mkl::dft::domain::COMPLEX>& desc);
+class commit_impl;
 
-ONEMKL_EXPORT commit_impl* create_commit(oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::DOUBLE,
-                                                        oneapi::mkl::dft::domain::COMPLEX>& desc);
+template <precision prec, domain dom>
+class descriptor;
 
-ONEMKL_EXPORT commit_impl* create_commit(oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::SINGLE,
-                                                        oneapi::mkl::dft::domain::REAL>& desc);
-
-ONEMKL_EXPORT commit_impl* create_commit(oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::DOUBLE,
-                                                        oneapi::mkl::dft::domain::REAL>& desc);
+template <precision prec, domain dom>
+ONEMKL_EXPORT commit_impl* create_commit(descriptor<prec, dom>& desc);
 
 } // namespace detail
 } // namespace dft

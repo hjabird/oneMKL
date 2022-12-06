@@ -20,7 +20,6 @@
 #ifndef _ONEMKL_DFT_COMMIT_IMPL_HPP_
 #define _ONEMKL_DFT_COMMIT_IMPL_HPP_
 
-#include <cstdint>
 #if __has_include(<sycl/sycl.hpp>)
 #include <sycl/sycl.hpp>
 #else
@@ -49,11 +48,9 @@ protected:
     sycl::queue queue_;
 };
 
-
 } // namespace detail
 } // namespace dft
 } // namespace mkl
 } // namespace oneapi
 
 #endif //_ONEMKL_DFT_COMMIT_IMPL_HPP_
-
