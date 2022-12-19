@@ -28,7 +28,7 @@ namespace mkl {
 namespace dft {
 
 namespace detail {
-// Predeclarations
+// Forward declarations
 class commit_impl;
 
 template <precision prec, domain dom>
