@@ -26,13 +26,13 @@
 namespace oneapi {
 namespace mkl {
 namespace dft {
-namespace {
-    template <precision prec, domain dom>
-    using descriptor = detail::descriptor<prec, dom>;
-} // anonymous namespace
+/** The detail namespace is required since the MKLGPU backend uses identical 
+names and function signatures in many places. **/
+
+template <precision prec, domain dom>
+using descriptor = detail::descriptor<prec, dom>;
 } // namespace dft
 } // namespace mkl
 } // namespace oneapi
-
 
 #endif // _ONEMKL_DFT_DESCRIPTOR_HPP_

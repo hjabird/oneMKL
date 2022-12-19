@@ -26,14 +26,15 @@ namespace oneapi {
 namespace mkl {
 namespace dft {
 
-namespace {
+/** The detail namespace is required since the MKLGPU backend uses identical 
+names and function signatures in many places. **/
+
 using precision = detail::precision;
 using domain = detail::domain;
 using config_param = detail::config_param;
 using config_value = detail::config_value;
 using dft_values = detail::dft_values;
 using DFT_ERROR = detail::DFT_ERROR;
-} // namespace
 
 } // namespace dft
 } // namespace mkl

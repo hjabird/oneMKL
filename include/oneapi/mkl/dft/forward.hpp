@@ -20,74 +20,59 @@
 #ifndef _ONEMKL_DFT_FORWARD_HPP_
 #define _ONEMKL_DFT_FORWARD_HPP_
 
-#include "oneapi/mkl/dft/detail/forward_impl.hpp"
+#if __has_include(<sycl/sycl.hpp>)
+#include <sycl/sycl.hpp>
+#else
+#include <CL/sycl.hpp>
+#endif
 
 namespace oneapi::mkl::dft {
-// Anonymous namespace solves issues of OneMKL function symbols matching with those
-// of the closed-source Intel MKL library.
-namespace {
 
 //Buffer version
 
 //In-place transform
 template <typename descriptor_type, typename data_type>
-void compute_forward(descriptor_type &desc, sycl::buffer<data_type, 1> &inout) {
-    return detail::compute_forward(desc, inout);
-}
+void compute_forward(descriptor_type &desc, sycl::buffer<data_type, 1> &inout);
 
 //In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format
 template <typename descriptor_type, typename data_type>
 void compute_forward(descriptor_type &desc, sycl::buffer<data_type, 1> &inout_re,
-                     sycl::buffer<data_type, 1> &inout_im) {
-    return detail::compute_forward(desc, inout_re, inout_im);
-}
+                     sycl::buffer<data_type, 1> &inout_im);
 
 //Out-of-place transform
 template <typename descriptor_type, typename input_type, typename output_type>
 void compute_forward(descriptor_type &desc, sycl::buffer<input_type, 1> &in,
-                     sycl::buffer<output_type, 1> &out) {
-    return detail::compute_forward(desc, in, out);
-}
+                     sycl::buffer<output_type, 1> &out);
 
 //Out-of-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format
 template <typename descriptor_type, typename input_type, typename output_type>
 void compute_forward(descriptor_type &desc, sycl::buffer<input_type, 1> &in_re,
                      sycl::buffer<input_type, 1> &in_im, sycl::buffer<output_type, 1> &out_re,
-                     sycl::buffer<output_type, 1> &out_im) {
-    return detail::compute_forward(desc, in_re, in_im, out_re, out_im);
-}
+                     sycl::buffer<output_type, 1> &out_im);
 
 //USM version
 
 //In-place transform
 template <typename descriptor_type, typename data_type>
 sycl::event compute_forward(descriptor_type &desc, data_type *inout,
-                            const std::vector<sycl::event> &dependencies = {}) {
-    return detail::compute_forward(desc, inout, dependencies);
-}
+                            const std::vector<sycl::event> &dependencies = {});
 
 //In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format
 template <typename descriptor_type, typename data_type>
 sycl::event compute_forward(descriptor_type &desc, data_type *inout_re, data_type *inout_im,
-                            const std::vector<sycl::event> &dependencies = {}) {
-    return detail::compute_forward(desc, inout_re, inout_im, dependencies);
-}
+                            const std::vector<sycl::event> &dependencies = {});
 
 //Out-of-place transform
 template <typename descriptor_type, typename input_type, typename output_type>
 sycl::event compute_forward(descriptor_type &desc, input_type *in, output_type *out,
-                            const std::vector<sycl::event> &dependencies = {}) {
-    return detail::compute_forward(desc, in, out, dependencies);
-}
+                            const std::vector<sycl::event> &dependencies = {});
 
 //Out-of-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format
 template <typename descriptor_type, typename input_type, typename output_type>
 sycl::event compute_forward(descriptor_type &desc, input_type *in_re, input_type *in_im,
                             output_type *out_re, output_type *out_im,
-                            const std::vector<sycl::event> &dependencies = {}) {
-    return detail::compute_forward(desc, in_re, in_im, out_re, out_im, dependencies);
-}
-} // anonymous namespace
+                            const std::vector<sycl::event> &dependencies = {});
+
 } // namespace oneapi::mkl::dft
 
 #endif // _ONEMKL_DFT_FORWARD_HPP_
