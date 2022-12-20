@@ -46,6 +46,9 @@ void descriptor<prec, dom>::set_value(config_param param, ...) {
             }
             else {
                 auto ptr = va_arg(vl, std::int64_t*);
+                if (ptr == nullptr) {
+                    throw mkl::invalid_argument("DFT", "set_value", "config_param is nullptr.");
+                }
                 std::copy(ptr, ptr + values_.rank + 1, values_.dimensions.begin());
             }
             break;
@@ -106,6 +109,9 @@ template <precision prec, domain dom>
 descriptor<prec, dom>::descriptor(std::vector<std::int64_t> dimensions)
         : dimensions_(std::move(dimensions)),
           rank_(dimensions.size()) {
+    if (dimensions_.size() == 0) {
+        throw mkl::invalid_argument("DFT", "descriptor", "Cannot have 0 dimensional DFT.");
+    }
     // Compute default strides - see MKL C interface developer reference for CCE format.
     std::vector<std::int64_t> strides(rank_ + 1, 1);
     // The first variable stide value is different.
@@ -150,6 +156,11 @@ void descriptor<prec, dom>::get_value(config_param param, ...) {
     int err = 0;
     using real_t = std::conditional_t<prec == precision::SINGLE, float, double>;
     va_list vl;
+    va_start(vl, param);
+    if (va_arg(vl, void*) == nullptr) {
+        throw mkl::invalid_argument("DFT", "get_value", "config_param is nullptr.");
+    }
+    va_end(vl);
     va_start(vl, param);
     switch (param) {
         case config_param::FORWARD_DOMAIN: *va_arg(vl, dft::domain*) = dom; break;
