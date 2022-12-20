@@ -49,7 +49,7 @@ void descriptor<prec, dom>::set_value(config_param param, ...) {
                 if (ptr == nullptr) {
                     throw mkl::invalid_argument("DFT", "set_value", "config_param is nullptr.");
                 }
-                std::copy(ptr, ptr + values_.rank + 1, values_.dimensions.begin());
+                std::copy(ptr, ptr + values_.rank, values_.dimensions.begin());
             }
             break;
         }
@@ -63,10 +63,10 @@ void descriptor<prec, dom>::set_value(config_param param, ...) {
                 throw mkl::invalid_argument("DFT", "set_value", "Invalid config_param argument.");
             }
             else if (param == config_param::INPUT_STRIDES) {
-                std::copy(strides, strides + values_.rank + 1, values_.input_strides.begin());
+                std::copy(strides, strides + values_.rank, values_.input_strides.begin());
             }
             else if (param == config_param::OUTPUT_STRIDES) {
-                std::copy(strides, strides + values_.rank + 1, values_.output_strides.begin());
+                std::copy(strides, strides + values_.rank, values_.output_strides.begin());
             }
             break;
         }
