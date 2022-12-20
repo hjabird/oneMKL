@@ -42,12 +42,23 @@ void descriptor<prec, dom>::set_value(config_param param, ...) {
             break;
         case config_param::LENGTHS: {
             if (values_.rank == 1) {
-                values_.dimensions = std::vector<std::int64_t>{ va_arg(vl, std::int64_t) };
+                std::int64_t length = va_arg(vl, std::int64_t);
+                if (length <= 0) {
+                    throw mkl::invalid_argument("DFT", "descriptor",
+                                                "Invalid length value (negative or 0).");
+                }
+                values_.dimensions[0] = length;
             }
             else {
                 auto ptr = va_arg(vl, std::int64_t*);
                 if (ptr == nullptr) {
                     throw mkl::invalid_argument("DFT", "set_value", "config_param is nullptr.");
+                }
+                for (auto length = ptr; length < ptr + values_.rank; ++length) {
+                    if (*length <= 0) {
+                        throw mkl::invalid_argument("DFT", "descriptor",
+                                                    "Invalid length value (negative or 0).");
+                    }
                 }
                 std::copy(ptr, ptr + values_.rank, values_.dimensions.begin());
             }
@@ -111,6 +122,12 @@ descriptor<prec, dom>::descriptor(std::vector<std::int64_t> dimensions)
           rank_(dimensions.size()) {
     if (dimensions_.size() == 0) {
         throw mkl::invalid_argument("DFT", "descriptor", "Cannot have 0 dimensional DFT.");
+    }
+    for (const auto& dim : dimensions) {
+        if (dim <= 0) {
+            throw mkl::invalid_argument("DFT", "descriptor",
+                                        "Invalid dimension value (negative or 0).");
+        }
     }
     // Compute default strides - see MKL C interface developer reference for CCE format.
     std::vector<std::int64_t> strides(rank_ + 1, 1);
