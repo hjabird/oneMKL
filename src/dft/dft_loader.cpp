@@ -67,12 +67,20 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                                                                         \
     /*Buffer version*/                                                                                  \
                                                                                                         \
-    /*In-place transform*/                                                                              \
+    /*In-place transform - real*/                                                                       \
     template <>                                                                                         \
-    ONEMKL_EXPORT void compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_FORWARD>(          \
-        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_FORWARD, 1> & inout) {        \
+    ONEMKL_EXPORT void compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>(             \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_REAL, 1> & inout) {           \
         detail::function_tables[get_device_id(desc.get_queue())]                                        \
-            .compute_forward_buffer_inplace_##EXT(desc, inout);                                         \
+            .compute_forward_buffer_inplace_real_##EXT(desc, inout);                                    \
+    }                                                                                                   \
+                                                                                                        \
+    /*In-place transform - complex*/                                                                    \
+    template <>                                                                                         \
+    ONEMKL_EXPORT void compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD>(         \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_BACKWARD, 1> & inout) {       \
+        detail::function_tables[get_device_id(desc.get_queue())]                                        \
+            .compute_forward_buffer_inplace_complex_##EXT(desc, inout);                                 \
     }                                                                                                   \
                                                                                                         \
     /*In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/     \
@@ -107,14 +115,23 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                                                                         \
     /*USM version*/                                                                                     \
                                                                                                         \
-    /*In-place transform*/                                                                              \
+    /*In-place transform - real*/                                                                       \
     template <>                                                                                         \
-    ONEMKL_EXPORT sycl::event                                                                           \
-    compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_FORWARD>(                             \
-        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_FORWARD * inout,                           \
+    ONEMKL_EXPORT sycl::event compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>(      \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_REAL * inout,                              \
         const std::vector<sycl::event>& dependencies) {                                                 \
         return detail::function_tables[get_device_id(desc.get_queue())]                                 \
-            .compute_forward_usm_inplace_##EXT(desc, inout, dependencies);                              \
+            .compute_forward_usm_inplace_real_##EXT(desc, inout, dependencies);                         \
+    }                                                                                                   \
+                                                                                                        \
+    /*In-place transform - complex*/                                                                    \
+    template <>                                                                                         \
+    ONEMKL_EXPORT sycl::event                                                                           \
+    compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD>(                            \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_BACKWARD * inout,                          \
+        const std::vector<sycl::event>& dependencies) {                                                 \
+        return detail::function_tables[get_device_id(desc.get_queue())]                                 \
+            .compute_forward_usm_inplace_complex_##EXT(desc, inout, dependencies);                      \
     }                                                                                                   \
                                                                                                         \
     /*In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/     \
@@ -149,12 +166,20 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                                                                         \
     /*Buffer version*/                                                                                  \
                                                                                                         \
-    /*In-place transform*/                                                                              \
+    /*In-place transform - real*/                                                                       \
+    template <>                                                                                         \
+    ONEMKL_EXPORT void compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>(            \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_REAL, 1> & inout) {           \
+        detail::function_tables[get_device_id(desc.get_queue())]                                        \
+            .compute_backward_buffer_inplace_real_##EXT(desc, inout);                                   \
+    }                                                                                                   \
+                                                                                                        \
+    /*In-place transform - complex */                                                                   \
     template <>                                                                                         \
     ONEMKL_EXPORT void compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD>(        \
         dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_BACKWARD, 1> & inout) {       \
         detail::function_tables[get_device_id(desc.get_queue())]                                        \
-            .compute_backward_buffer_inplace_##EXT(desc, inout);                                        \
+            .compute_backward_buffer_inplace_complex_##EXT(desc, inout);                                \
     }                                                                                                   \
                                                                                                         \
     /*In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/     \
@@ -189,14 +214,24 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                                                                         \
     /*USM version*/                                                                                     \
                                                                                                         \
-    /*In-place transform*/                                                                              \
+    /*In-place transform - real*/                                                                       \
+    template <>                                                                                         \
+    ONEMKL_EXPORT sycl::event                                                                           \
+    compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>(                               \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_REAL * inout,                              \
+        const std::vector<sycl::event>& dependencies) {                                                 \
+        return detail::function_tables[get_device_id(desc.get_queue())]                                 \
+            .compute_backward_usm_inplace_real_##EXT(desc, inout, dependencies);                        \
+    }                                                                                                   \
+                                                                                                        \
+    /*In-place transform - complex*/                                                                    \
     template <>                                                                                         \
     ONEMKL_EXPORT sycl::event                                                                           \
     compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD>(                           \
         dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_BACKWARD * inout,                          \
         const std::vector<sycl::event>& dependencies) {                                                 \
         return detail::function_tables[get_device_id(desc.get_queue())]                                 \
-            .compute_backward_usm_inplace_##EXT(desc, inout, dependencies);                             \
+            .compute_backward_usm_inplace_complex_##EXT(desc, inout, dependencies);                     \
     }                                                                                                   \
                                                                                                         \
     /*In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/     \
