@@ -17,23 +17,8 @@
 * SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
-/*
-*
-*  Content:
-*       This example demonstrates use of oneapi::mkl::dft::getrf and
-*       oneapi::mkl::dft::getrs to perform LU factorization and compute
-*       the solution on both an Intel cpu device and NVIDIA cpu device.
-*
-*       This example demonstrates only single precision (float) data type
-*       for matrix data
-*
-*******************************************************************************/
-
 // STL includes
-#include <algorithm>
-#include <cstdlib>
 #include <iostream>
-#include <vector>
 
 // oneMKL/SYCL includes
 #if __has_include(<sycl/sycl.hpp>)
@@ -43,80 +28,76 @@
 #endif
 #include "oneapi/mkl.hpp"
 
-// local includes
-#include "example_helper.hpp"
+void run_example(const sycl::device& gpu_deviceice) {
+    constexpr int N = 10;
 
-void run_getrs_example(const sycl::device& cpu_device) {
-    // Matrix sizes and leading dimensions
-    constexpr std::size_t N = 10;
-    std::int64_t rs[3] {0, N, 1};
-
-
-    // Catch asynchronous exceptions for cpu and cpu
-    auto cpu_error_handler = [&](sycl::exception_list exceptions) {
+    // Catch asynchronous exceptions for cpu
+    auto gpu_error_handler = [&](sycl::exception_list exceptions) {
         for (auto const& e : exceptions) {
             try {
                 std::rethrow_exception(e);
             }
             catch (sycl::exception const& e) {
                 // Handle not dft related exceptions that happened during asynchronous call
-                std::cerr
-                    << "Caught asynchronous SYCL exception on cpu device during GETRF or GETRS:"
-                    << std::endl;
+                std::cerr << "Caught asynchronous SYCL exception:" << std::endl;
                 std::cerr << "\t" << e.what() << std::endl;
             }
         }
         std::exit(2);
     };
 
-    std::cout << "DFTI example" << std::endl;
-    //
-    // Preparation on cpu
-    //
-    sycl::queue cpu_queue(cpu_device, cpu_error_handler);
-    sycl::context cpu_context = cpu_queue.get_context();
-    sycl::event cpu_getrf_done;
+    sycl::queue gpu_queue(gpu_deviceice, gpu_error_handler);
 
-    double *x_usm = (double*) malloc_shared(N*2*sizeof(double), cpu_queue.get_device(), cpu_queue.get_context());
+    std::vector<std::complex<float>> input_data(N);
+    std::vector<std::complex<float>> output_data(N);
 
     // enabling
-    // 1. create descriptors 
-    oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::DOUBLE, oneapi::mkl::dft::domain::COMPLEX> desc(N);
+    // 1. create descriptors
+    oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::SINGLE,
+                                 oneapi::mkl::dft::domain::COMPLEX>
+        desc(N);
 
     // 2. variadic set_value
-    desc.set_value(oneapi::mkl::dft::config_param::PLACEMENT, oneapi::mkl::dft::config_value::NOT_INPLACE);
+    desc.set_value(oneapi::mkl::dft::config_param::PLACEMENT,
+                   oneapi::mkl::dft::config_value::NOT_INPLACE);
+    desc.set_value(oneapi::mkl::dft::config_param::NUMBER_OF_TRANSFORMS,
+                   static_cast<std::int64_t>(1));
 
-    // 3. commit_descriptor (compile_time CPU)
-    desc.commit(oneapi::mkl::backend_selector<oneapi::mkl::backend::mklcpu>{ cpu_queue });
+    // 3. commit_descriptor (compile_time MKLGPU)
+    desc.commit(oneapi::mkl::backend_selector<oneapi::mkl::backend::mklgpu>{ gpu_queue });
 
-    // 5. compute_forward / compute_backward (CPU)
-    // oneapi::mkl::dft::compute_forward(desc, x_usm);
+    // 5. compute_forward / compute_backward (MKLGPU)
+    {
+        sycl::buffer<std::complex<float>> input_buffer(input_data.data(), sycl::range<1>(N));
+        sycl::buffer<std::complex<float>> output_buffer(output_data.data(), sycl::range<1>(N));
+        oneapi::mkl::dft::mklgpu::compute_forward<decltype(desc), std::complex<float>,
+                                                  std::complex<float>>(desc, input_buffer,
+                                                                       output_buffer);
+    }
 }
 
 //
 // Description of example setup, apis used and supported floating point type precisions
 //
-
 void print_example_banner() {
     std::cout << "" << std::endl;
     std::cout << "########################################################################"
               << std::endl;
-    std::cout
-        << "# DFTI complex in-place forward transform for USM/Buffer API's example: "
-        << std::endl;
+    std::cout << "# Complex out-of-place forward transform for Buffer API's example: " << std::endl;
     std::cout << "# " << std::endl;
     std::cout << "# Using APIs:" << std::endl;
-    std::cout << "#   USM/BUffer forward complex in-place" << std::endl;
+    std::cout << "#   Compile-time dispatch API" << std::endl;
+    std::cout << "#   Buffer forward complex out-of-place" << std::endl;
     std::cout << "# " << std::endl;
     std::cout << "# Using single precision (float) data type" << std::endl;
     std::cout << "# " << std::endl;
-    std::cout << "# Device will be selected during runtime." << std::endl;
+    std::cout << "# Using single precision (float) data type" << std::endl;
+    std::cout << "# " << std::endl;
+    std::cout << "# For Intel GPU with Intel MKLGPU backend." << std::endl;
+    std::cout << "# " << std::endl;
     std::cout << "# The environment variable SYCL_DEVICE_FILTER can be used to specify"
               << std::endl;
-    std::cout << "# Using single precision (float) data type" << std::endl;
-    std::cout << "# " << std::endl;
-    std::cout << "# Running on both Intel cpu and NVIDIA cpu devices" << std::endl;
-    std::cout << "# " << std::endl;
+    std::cout << "# SYCL device" << std::endl;
     std::cout << "########################################################################"
               << std::endl;
     std::cout << std::endl;
@@ -129,13 +110,15 @@ int main(int argc, char** argv) {
     print_example_banner();
 
     try {
-        sycl::device cpu_dev((sycl::cpu_selector_v));
-        std::cout << "Running DFT Complex forward inplace USM example" << std::endl;
+        sycl::device gpu_device((sycl::gpu_selector_v));
+        std::cout << "Running DFT Complex forward out-of-place buffer example" << std::endl;
+        std::cout << "Using compile-time dispatch API with MKLGPU." << std::endl;
         std::cout << "Running with single precision real data type on:" << std::endl;
-        std::cout << "\tcpu device :" << cpu_dev.get_info<sycl::info::device::name>() << std::endl;
+        std::cout << "\tGPU device :" << gpu_device.get_info<sycl::info::device::name>()
+                  << std::endl;
 
-        run_getrs_example(cpu_dev);
-        std::cout << "DFT Complex USM example ran OK on MKLcpu" << std::endl;
+        run_example(gpu_device);
+        std::cout << "DFT Complex USM example ran OK on MKLGPU" << std::endl;
     }
     catch (sycl::exception const& e) {
         // Handle not dft related exceptions that happened during synchronous call

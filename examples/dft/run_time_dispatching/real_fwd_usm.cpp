@@ -1,9 +1,25 @@
+/*******************************************************************************
+* Copyright 2022 Intel Corporation
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions
+* and limitations under the License.
+*
+*
+* SPDX-License-Identifier: Apache-2.0
+*******************************************************************************/
 
 // stl includes
-#include <algorithm>
-#include <cstdlib>
 #include <iostream>
-#include <vector>
+#include <cstdint>
 
 // oneMKL/SYCL includes
 #if __has_include(<sycl/sycl.hpp>)
@@ -11,22 +27,11 @@
 #else
 #include <CL/sycl.hpp>
 #endif
+
 #include "oneapi/mkl.hpp"
 
-// local includes
-#include "example_helper.hpp"
-
-constexpr int SUCCESS = 0;
-constexpr int FAILURE = 1;
-constexpr double TWOPI = 6.2831853071795864769;
-
-void run_uniform_example(const sycl::device& dev) {
-
+void run_example(const sycl::device& dev) {
     int N = 16;
-    int harmonic = 5;
-    int buffer_result = FAILURE;
-    int usm_result = FAILURE;
-    int result = FAILURE;
 
     // Catch asynchronous exceptions
     auto exception_handler = [](sycl::exception_list exceptions) {
@@ -42,33 +47,34 @@ void run_uniform_example(const sycl::device& dev) {
         std::exit(2);
     };
 
-    sycl::queue queue(dev, exception_handler);
-
     std::cout << "DFTI example run_time dispatch" << std::endl;
-    //
-    // Preparation on cpu
-    //
-    sycl::queue cpu_queue(dev, exception_handler);
-    sycl::context cpu_context = cpu_queue.get_context();
-    sycl::event cpu_getrf_done;
 
-    double *x_usm = (double*) malloc_shared(N*2*sizeof(double), cpu_queue.get_device(), cpu_queue.get_context());
+    sycl::queue sycl_queue(dev, exception_handler);
+    auto x_usm = sycl::malloc_shared<float>(N * 2, sycl_queue);
 
-    // enabling
-    // 1. create descriptors 
-    oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::DOUBLE, oneapi::mkl::dft::domain::COMPLEX> desc_vector({N,N});
+    // 1. create descriptors
+    oneapi::mkl::dft::descriptor<oneapi::mkl::dft::precision::SINGLE,
+                                 oneapi::mkl::dft::domain::REAL>
+        desc(N);
 
     // 2. variadic set_value
-    desc_vector.set_value(oneapi::mkl::dft::config_param::BACKWARD_SCALE, (double)(1.0/N));
-    desc_vector.set_value(oneapi::mkl::dft::config_param::NUMBER_OF_TRANSFORMS, 4);
-    desc_vector.set_value(oneapi::mkl::dft::config_param::BWD_DISTANCE, N);
-    desc_vector.set_value(oneapi::mkl::dft::config_param::PLACEMENT, oneapi::mkl::dft::config_value::NOT_INPLACE);
+    desc.set_value(oneapi::mkl::dft::config_param::FORWARD_SCALE, 1.f / N);
+    desc.set_value(oneapi::mkl::dft::config_param::NUMBER_OF_TRANSFORMS,
+                   static_cast<std::int64_t>(1));
+    desc.set_value(oneapi::mkl::dft::config_param::PLACEMENT,
+                   oneapi::mkl::dft::config_value::INPLACE);
 
-    // 4. commit_descriptor (run_time xPU)
-    desc_vector.commit(cpu_queue);
+    // 4. commit_descriptor (runtime xPU)
+    desc.commit(sycl_queue);
 
-    // 5. compute_forward / compute_backward (CPU)
-    // oneapi::mkl::dft::compute_forward(desc, x_usm);
+    // 5. compute_forward / compute_backward (runtime xPU)
+    auto compute_event = oneapi::mkl::dft::compute_forward(desc, x_usm);
+
+    // Do something with transformed data.
+    compute_event.wait();
+
+    // 6. Free USM allocation.
+    sycl::free(x_usm, sycl_queue);
 }
 
 //
@@ -78,12 +84,11 @@ void print_example_banner() {
     std::cout << "" << std::endl;
     std::cout << "########################################################################"
               << std::endl;
-    std::cout
-        << "# DFTI complex in-place forward transform for USM/Buffer API's example: "
-        << std::endl;
+    std::cout << "# DFTI complex in-place forward transform with USM API example: " << std::endl;
     std::cout << "# " << std::endl;
     std::cout << "# Using APIs:" << std::endl;
-    std::cout << "#   USM/BUffer forward complex in-place" << std::endl;
+    std::cout << "#   USM forward complex in-place" << std::endl;
+    std::cout << "#   Run-time dispatch" << std::endl;
     std::cout << "# " << std::endl;
     std::cout << "# Using single precision (float) data type" << std::endl;
     std::cout << "# " << std::endl;
@@ -119,7 +124,7 @@ int main(int argc, char** argv) {
         }
         std::cout << "Running with single precision real data type:" << std::endl;
 
-        run_uniform_example(my_dev);
+        run_example(my_dev);
         std::cout << "DFIT example ran OK" << std::endl;
     }
     catch (sycl::exception const& e) {
