@@ -27,6 +27,10 @@ namespace detail {
 
 template <precision prec, domain dom>
 void descriptor<prec, dom>::set_value(config_param param, ...) {
+    if (pimpl_) {
+        throw mkl::invalid_argument("DFT", "set_value",
+                                    "Cannot set value on committed descriptor.");
+    }
     va_list vl;
     va_start(vl, param);
     switch (param) {
@@ -54,13 +58,16 @@ void descriptor<prec, dom>::set_value(config_param param, ...) {
             auto strides = va_arg(vl, std::int64_t*);
             if (strides == nullptr) {
                 throw mkl::invalid_argument("DFT", "set_value", "Invalid config_param argument.");
-            } else if (param == config_param::INPUT_STRIDES) {
+            }
+            else if (param == config_param::INPUT_STRIDES) {
                 std::copy(strides, strides + values_.rank + 1, values_.input_strides.begin());
-            } else if (param == config_param::OUTPUT_STRIDES){ 
+            }
+            else if (param == config_param::OUTPUT_STRIDES) {
                 std::copy(strides, strides + values_.rank + 1, values_.output_strides.begin());
             }
             break;
         }
+        // VA arg promotes float args to double, so the following is always double:
         case config_param::FORWARD_SCALE: values_.fwd_scale = va_arg(vl, double); break;
         case config_param::BACKWARD_SCALE: values_.bwd_scale = va_arg(vl, double); break;
         case config_param::NUMBER_OF_TRANSFORMS:
@@ -99,14 +106,24 @@ template <precision prec, domain dom>
 descriptor<prec, dom>::descriptor(std::vector<std::int64_t> dimensions)
         : dimensions_(std::move(dimensions)),
           rank_(dimensions.size()) {
-    // Compute default strides.
-    std::vector<std::int64_t> defaultStrides(rank_, 1);
-    for (int i = rank_ - 1; i < 0; --i) {
-        defaultStrides[i] = defaultStrides[i - 1] * dimensions_[i];
+    // Compute default strides - see MKL C interface developer reference for CCE format.
+    std::vector<std::int64_t> strides(rank_ + 1, 1);
+    // The first variable stide value is different.
+    if (rank_ > 1) {
+        strides[rank_ - 1] = dimensions_[rank_] / 2 + 1;
     }
-    defaultStrides[0] = 0;
-    values_.input_strides = defaultStrides;
-    values_.output_strides = std::move(defaultStrides);
+    for (int i = rank_ - 2; i > 0; --i) {
+        strides[i] = strides[i + 1] * dimensions_[i];
+    }
+    strides[0] = 0;
+    // Default for correct strides for forward transform.
+    values_.output_strides = strides;
+    if constexpr (dom == domain::COMPLEX) {
+        for (int i = 1; i < rank_; ++i) {
+            strides[i] *= 2;
+        }
+    }
+    values_.input_strides = std::move(strides);
     values_.bwd_scale = 1.0;
     values_.fwd_scale = 1.0;
     values_.number_of_transforms = 1;
@@ -131,6 +148,7 @@ descriptor<prec, dom>::~descriptor() {}
 template <precision prec, domain dom>
 void descriptor<prec, dom>::get_value(config_param param, ...) {
     int err = 0;
+    using real_t = std::conditional_t<prec == precision::SINGLE, float, double>;
     va_list vl;
     va_start(vl, param);
     switch (param) {
@@ -141,8 +159,12 @@ void descriptor<prec, dom>::get_value(config_param param, ...) {
                       va_arg(vl, std::int64_t*));
             break;
         case config_param::PRECISION: *va_arg(vl, dft::precision*) = prec; break;
-        case config_param::FORWARD_SCALE: *va_arg(vl, double*) = values_.fwd_scale; break;
-        case config_param::BACKWARD_SCALE: *va_arg(vl, double*) = values_.bwd_scale; break;
+        case config_param::FORWARD_SCALE:
+            *va_arg(vl, real_t*) = static_cast<real_t>(values_.fwd_scale);
+            break;
+        case config_param::BACKWARD_SCALE:
+            *va_arg(vl, real_t*) = static_cast<real_t>(values_.bwd_scale);
+            break;
         case config_param::NUMBER_OF_TRANSFORMS:
             *va_arg(vl, std::int64_t*) = values_.number_of_transforms;
             break;
