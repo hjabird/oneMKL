@@ -133,7 +133,7 @@ descriptor<prec, dom>::descriptor(std::vector<std::int64_t> dimensions)
     std::vector<std::int64_t> strides(rank_ + 1, 1);
     // The first variable stide value is different.
     if (rank_ > 1) {
-        strides[rank_ - 1] = dimensions_[rank_] / 2 + 1;
+        strides[rank_ - 1] = dimensions_[rank_ - 1] / 2 + 1;
     }
     for (int i = rank_ - 2; i > 0; --i) {
         strides[i] = strides[i + 1] * dimensions_[i];
@@ -141,7 +141,7 @@ descriptor<prec, dom>::descriptor(std::vector<std::int64_t> dimensions)
     strides[0] = 0;
     // Default for correct strides for forward transform.
     values_.output_strides = strides;
-    if constexpr (dom == domain::COMPLEX) {
+    if constexpr (dom == domain::REAL) {
         for (int i = 1; i < rank_; ++i) {
             strides[i] *= 2;
         }
