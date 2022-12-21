@@ -87,12 +87,9 @@ enum class config_value {
     ALLOW,
     AVOID,
     NONE,
-    WORKSPACE_INTERNAL,
-    WORKSPACE_EXTERNAL,
 
     // for config_param::PACKED_FORMAT for storing conjugate-even finite sequence in real containers
     CCE_FORMAT
-
 };
 
 struct dft_values {
