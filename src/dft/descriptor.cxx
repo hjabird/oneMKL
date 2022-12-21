@@ -25,6 +25,49 @@ namespace mkl {
 namespace dft {
 namespace detail {
 
+// Compute the default strides for a domain. Modifies real_strides and complex_strides
+// argument.
+template <domain dom>
+static void compute_default_strides(const std::vector<std::int64_t>& dimensions, int rank,
+                                    std::vector<std::int64_t>& input_strides,
+                                    std::vector<std::int64_t>& output_strides);
+
+template <>
+void compute_default_strides<domain::REAL>(const std::vector<std::int64_t>& dimensions, int rank,
+                                           std::vector<std::int64_t>& input_strides,
+                                           std::vector<std::int64_t>& output_strides) {
+    // Compute strides for CCE format.
+    // See MKL C interface developer reference for explanation of the below.
+    std::vector<std::int64_t> strides(rank + 1, 1);
+    // The first variable stride value is different.
+    if (rank > 1) {
+        strides[rank - 1] = dimensions[rank - 1] / 2 + 1;
+    }
+    for (int i = rank - 2; i > 0; --i) {
+        strides[i] = strides[i + 1] * dimensions[i];
+    }
+    strides[0] = 0;
+    output_strides = strides;
+    for (int i = 1; i < rank; ++i) {
+        strides[i] *= 2;
+    }
+    input_strides = std::move(strides);
+}
+
+template <>
+void compute_default_strides<domain::COMPLEX>(const std::vector<std::int64_t>& dimensions, int rank,
+                                              std::vector<std::int64_t>& input_strides,
+                                              std::vector<std::int64_t>& output_strides) {
+    // Default is for COMPLEX_COMPLEX storage
+    std::vector<std::int64_t> strides(rank + 1, 1);
+    for (int i = rank - 1; i > 0; --i) {
+        strides[i] = strides[i + 1] * dimensions[i];
+    }
+    strides[0] = 0;
+    output_strides = strides;
+    input_strides = std::move(strides);
+}
+
 template <precision prec, domain dom>
 void descriptor<prec, dom>::set_value(config_param param, ...) {
     if (pimpl_) {
@@ -129,24 +172,8 @@ descriptor<prec, dom>::descriptor(std::vector<std::int64_t> dimensions)
                                         "Invalid dimension value (negative or 0).");
         }
     }
-    // Compute default strides - see MKL C interface developer reference for CCE format.
-    std::vector<std::int64_t> strides(rank_ + 1, 1);
-    // The first variable stide value is different.
-    if (rank_ > 1) {
-        strides[rank_ - 1] = dimensions_[rank_ - 1] / 2 + 1;
-    }
-    for (int i = rank_ - 2; i > 0; --i) {
-        strides[i] = strides[i + 1] * dimensions_[i];
-    }
-    strides[0] = 0;
-    // Default for correct strides for forward transform.
-    values_.output_strides = strides;
-    if constexpr (dom == domain::REAL) {
-        for (int i = 1; i < rank_; ++i) {
-            strides[i] *= 2;
-        }
-    }
-    values_.input_strides = std::move(strides);
+    // Assume forward transform.
+    compute_default_strides<dom>(dimensions_, rank_, values_.input_strides, values_.output_strides);
     values_.bwd_scale = 1.0;
     values_.fwd_scale = 1.0;
     values_.number_of_transforms = 1;
