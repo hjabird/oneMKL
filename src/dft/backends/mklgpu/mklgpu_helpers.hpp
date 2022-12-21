@@ -82,8 +82,8 @@ inline constexpr dft::config_param to_mklgpu(dft::detail::config_param param) {
 }
 
 /** Convert a config_value to the backend's native value. Throw on invalid input.
- * @Param The config param the value is for.
- * @value THe config value to convert.
+ * @tparam Param The config param the value is for.
+ * @param value The config value to convert.
 **/
 template <dft::detail::config_param Param>
 inline constexpr int to_mklgpu(dft::detail::config_value value);

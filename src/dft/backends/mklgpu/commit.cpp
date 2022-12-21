@@ -96,7 +96,6 @@ private:
         desc.set_value(backend_param::NUMBER_OF_TRANSFORMS, config.number_of_transforms);
         desc.set_value(backend_param::COMPLEX_STORAGE,
                        to_mklgpu<onemkl_param::COMPLEX_STORAGE>(config.complex_storage));
-        // desc.set_value(backend_param::REAL_STORAGE, to_mklgpu<onemkl_param::REAL_STORAGE>(config.real_storage));
         // Conjugate even storage only supports COMPLEX_COMPLEX. to_mklgpu will throw on invalid config.
         (void)to_mklgpu<onemkl_param::CONJUGATE_EVEN_STORAGE>(config.conj_even_storage);
         desc.set_value(backend_param::PLACEMENT,
@@ -105,7 +104,7 @@ private:
         desc.set_value(backend_param::OUTPUT_STRIDES, config.output_strides.data());
         desc.set_value(backend_param::FWD_DISTANCE, config.fwd_dist);
         desc.set_value(backend_param::BWD_DISTANCE, config.bwd_dist);
-        // Leave backend_param::REAL_STORAGE as default value (exists as config param, but no value ine dft_values)
+        // Leave backend_param::REAL_STORAGE as default value (exists as config param, but no value in dft_values)
         // Leave backend_param::WORKSPACE as default value.
         // Leave backend_param::ORDERING as default value.
         // Leave backend_param::TRANSPOSE as false (default value).
