@@ -65,7 +65,7 @@ public:
     sycl::queue& get_queue() {
         return queue_;
     };
-    dft_values get_values() {
+    dft_values<prec, dom> get_values() {
         return values_;
     };
 
@@ -77,7 +77,7 @@ private:
     std::vector<std::int64_t> dimensions_;
 
     // descriptor configuration values_ and structs
-    dft_values values_;
+    dft_values<prec, dom> values_;
 };
 
 } // namespace detail

@@ -22,6 +22,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <type_traits>
 
 namespace oneapi {
 namespace mkl {
@@ -63,6 +64,7 @@ enum class config_param {
     PACKED_FORMAT,
     COMMIT_STATUS
 };
+
 enum class config_value {
     // for config_param::COMMIT_STATUS
     COMMITTED,
@@ -92,24 +94,31 @@ enum class config_value {
     CCE_FORMAT
 };
 
-struct dft_values {
+template <precision prec, domain dom>
+class dft_values {
+private:
+    using real_t = std::conditional_t<prec == precision::SINGLE, float, double>;
+
+public:
     std::vector<std::int64_t> input_strides;
     std::vector<std::int64_t> output_strides;
-    double bwd_scale;
-    double fwd_scale;
+    real_t bwd_scale;
+    real_t fwd_scale;
     std::int64_t number_of_transforms;
     std::int64_t fwd_dist;
     std::int64_t bwd_dist;
     config_value placement;
     config_value complex_storage;
+    config_value real_storage;
     config_value conj_even_storage;
     config_value workspace;
-
+    config_value ordering;
+    bool transpose;
+    config_value packed_format;
     std::vector<std::int64_t> dimensions;
     std::int64_t rank;
-    domain domain;
-    precision precision;
 };
+
 } // namespace detail
 } // namespace dft
 } // namespace mkl

@@ -20,6 +20,8 @@
 #include "oneapi/mkl/detail/exceptions.hpp"
 #include "oneapi/mkl/dft/descriptor.hpp"
 
+#include "dft/descriptor_config_helper.hpp"
+
 namespace oneapi {
 namespace mkl {
 namespace dft {
@@ -86,24 +88,10 @@ void descriptor<prec, dom>::set_value(config_param param, ...) {
         case config_param::LENGTHS: {
             if (values_.rank == 1) {
                 std::int64_t length = va_arg(vl, std::int64_t);
-                if (length <= 0) {
-                    throw mkl::invalid_argument("DFT", "descriptor",
-                                                "Invalid length value (negative or 0).");
-                }
-                values_.dimensions[0] = length;
+                detail::set_value<config_param::LENGTHS>(values_, &length);
             }
             else {
-                auto ptr = va_arg(vl, std::int64_t*);
-                if (ptr == nullptr) {
-                    throw mkl::invalid_argument("DFT", "set_value", "config_param is nullptr.");
-                }
-                for (auto length = ptr; length < ptr + values_.rank; ++length) {
-                    if (*length <= 0) {
-                        throw mkl::invalid_argument("DFT", "descriptor",
-                                                    "Invalid length value (negative or 0).");
-                    }
-                }
-                std::copy(ptr, ptr + values_.rank, values_.dimensions.begin());
+                detail::set_value<config_param::LENGTHS>(values_, va_arg(vl, std::int64_t*));
             }
             break;
         }
@@ -111,45 +99,50 @@ void descriptor<prec, dom>::set_value(config_param param, ...) {
             throw mkl::invalid_argument("DFT", "set_value", "Read-only parameter.");
             break;
         case config_param::INPUT_STRIDES:
+            detail::set_value<config_param::INPUT_STRIDES>(values_, va_arg(vl, std::int64_t*));
+            break;
         case config_param::OUTPUT_STRIDES: {
-            auto strides = va_arg(vl, std::int64_t*);
-            if (strides == nullptr) {
-                throw mkl::invalid_argument("DFT", "set_value", "Invalid config_param argument.");
-            }
-            else if (param == config_param::INPUT_STRIDES) {
-                std::copy(strides, strides + values_.rank, values_.input_strides.begin());
-            }
-            else if (param == config_param::OUTPUT_STRIDES) {
-                std::copy(strides, strides + values_.rank, values_.output_strides.begin());
-            }
+            detail::set_value<config_param::OUTPUT_STRIDES>(values_, va_arg(vl, std::int64_t*));
             break;
         }
         // VA arg promotes float args to double, so the following is always double:
-        case config_param::FORWARD_SCALE: values_.fwd_scale = va_arg(vl, double); break;
-        case config_param::BACKWARD_SCALE: values_.bwd_scale = va_arg(vl, double); break;
-        case config_param::NUMBER_OF_TRANSFORMS:
-            values_.number_of_transforms = va_arg(vl, int64_t);
+        case config_param::FORWARD_SCALE:
+            detail::set_value<config_param::FORWARD_SCALE>(values_, va_arg(vl, double));
             break;
-        case config_param::FWD_DISTANCE: values_.fwd_dist = va_arg(vl, std::int64_t); break;
-        case config_param::BWD_DISTANCE: values_.bwd_dist = va_arg(vl, std::int64_t); break;
-        case config_param::PLACEMENT: values_.placement = va_arg(vl, config_value); break;
+        case config_param::BACKWARD_SCALE:
+            detail::set_value<config_param::BACKWARD_SCALE>(values_, va_arg(vl, double));
+            break;
+        case config_param::NUMBER_OF_TRANSFORMS:
+            detail::set_value<config_param::NUMBER_OF_TRANSFORMS>(values_,
+                                                                  va_arg(vl, std::int64_t));
+            break;
+        case config_param::FWD_DISTANCE:
+            detail::set_value<config_param::FWD_DISTANCE>(values_, va_arg(vl, std::int64_t));
+            break;
+        case config_param::BWD_DISTANCE:
+            detail::set_value<config_param::BWD_DISTANCE>(values_, va_arg(vl, std::int64_t));
+            break;
+        case config_param::PLACEMENT:
+            detail::set_value<config_param::PLACEMENT>(values_, va_arg(vl, config_value));
+            break;
         case config_param::COMPLEX_STORAGE:
-            values_.complex_storage = va_arg(vl, config_value);
+            detail::set_value<config_param::COMPLEX_STORAGE>(values_, va_arg(vl, config_value));
             break;
         case config_param::REAL_STORAGE:
-            throw mkl::unimplemented("DFT", "set_value", "Real storage not implemented.");
+            detail::set_value<config_param::REAL_STORAGE>(values_, va_arg(vl, config_value));
             break;
         case config_param::CONJUGATE_EVEN_STORAGE:
-            values_.conj_even_storage = va_arg(vl, config_value);
+            detail::set_value<config_param::CONJUGATE_EVEN_STORAGE>(values_,
+                                                                    va_arg(vl, config_value));
             break;
         case config_param::ORDERING:
-            throw mkl::unimplemented("DFT", "set_value", "Ordering not implemented.");
+            detail::set_value<config_param::ORDERING>(values_, va_arg(vl, config_value));
             break;
         case config_param::TRANSPOSE:
-            throw mkl::unimplemented("DFT", "set_value", "Transpose not implemented.");
+            detail::set_value<config_param::TRANSPOSE>(values_, va_arg(vl, int));
             break;
         case config_param::PACKED_FORMAT:
-            throw mkl::unimplemented("DFT", "set_value", "Packed format not implemented.");
+            detail::set_value<config_param::PACKED_FORMAT>(values_, va_arg(vl, config_value));
             break;
         case config_param::COMMIT_STATUS:
             throw mkl::invalid_argument("DFT", "set_value", "Read-only parameter.");
@@ -181,11 +174,14 @@ descriptor<prec, dom>::descriptor(std::vector<std::int64_t> dimensions)
     values_.bwd_dist = 1;
     values_.placement = config_value::INPLACE;
     values_.complex_storage = config_value::COMPLEX_COMPLEX;
+    values_.real_storage = config_value::REAL_REAL;
     values_.conj_even_storage = config_value::COMPLEX_COMPLEX;
+    values_.workspace = config_value::ALLOW;
+    values_.ordering = config_value::ORDERED;
+    values_.transpose = false;
+    values_.packed_format = config_value::CCE_FORMAT;
     values_.dimensions = dimensions_;
     values_.rank = rank_;
-    values_.domain = dom;
-    values_.precision = prec;
 }
 
 template <precision prec, domain dom>
@@ -226,9 +222,7 @@ void descriptor<prec, dom>::get_value(config_param param, ...) {
         case config_param::COMPLEX_STORAGE:
             *va_arg(vl, config_value*) = values_.complex_storage;
             break;
-        case config_param::REAL_STORAGE:
-            throw mkl::unimplemented("DFT", "get_value", "Real storage not implemented.");
-            break;
+        case config_param::REAL_STORAGE: *va_arg(vl, config_value*) = values_.real_storage; break;
         case config_param::CONJUGATE_EVEN_STORAGE:
             *va_arg(vl, config_value*) = values_.conj_even_storage;
             break;
@@ -244,16 +238,13 @@ void descriptor<prec, dom>::get_value(config_param param, ...) {
         case config_param::FWD_DISTANCE: *va_arg(vl, std::int64_t*) = values_.fwd_dist; break;
         case config_param::BWD_DISTANCE: *va_arg(vl, std::int64_t*) = values_.bwd_dist; break;
         case config_param::WORKSPACE: *va_arg(vl, config_value*) = values_.workspace; break;
-        case config_param::ORDERING:
-            throw mkl::unimplemented("DFT", "get_value", "Ordering not implemented.");
+        case config_param::ORDERING: *va_arg(vl, config_value*) = values_.ordering; break;
+        case config_param::TRANSPOSE: *va_arg(vl, int*) = values_.transpose; break;
+        case config_param::PACKED_FORMAT: *va_arg(vl, config_value*) = values_.packed_format; break;
+        case config_param::COMMIT_STATUS:
+            *va_arg(vl, config_value*) =
+                pimpl_ ? config_value::COMMITTED : config_value::UNCOMMITTED;
             break;
-        case config_param::TRANSPOSE:
-            throw mkl::unimplemented("DFT", "get_value", "Real storage not implemented.");
-            break;
-        case config_param::PACKED_FORMAT:
-            throw mkl::unimplemented("DFT", "get_value", "Real storage not implemented.");
-            break;
-        case config_param::COMMIT_STATUS: *va_arg(vl, bool*) = static_cast<bool>(pimpl_); break;
         default: throw mkl::invalid_argument("DFT", "get_value", "Invalid config_param argument.");
     }
     va_end(vl);
