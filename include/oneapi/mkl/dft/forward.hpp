@@ -26,8 +26,6 @@
 #include <CL/sycl.hpp>
 #endif
 
-#include "oneapi/mkl/dft/descriptor.hpp"
-
 namespace oneapi::mkl::dft {
 
 //Buffer version

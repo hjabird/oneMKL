@@ -20,27 +20,24 @@
 #ifndef _ONEMKL_DFT_MKLCPU_HPP_
 #define _ONEMKL_DFT_MKLCPU_HPP_
 
-#include <cstdint>
-#if __has_include(<sycl/sycl.hpp>)
-#include <sycl/sycl.hpp>
-#else
-#include <CL/sycl.hpp>
-#endif
-
 #include "oneapi/mkl/detail/export.hpp"
-
-#include "oneapi/mkl/types.hpp"
-#include "oneapi/mkl/dft/types.hpp"
-#include "oneapi/mkl/dft/descriptor.hpp"
+#include "oneapi/mkl/dft/detail/types_impl.hpp"
 
 namespace oneapi {
 namespace mkl {
 namespace dft {
-namespace mklcpu {
 
-template<oneapi::mkl::dft::precision prec, oneapi::mkl::dft::domain dom>
-ONEMKL_EXPORT oneapi::mkl::dft::detail::commit_impl* create_commit(
-    oneapi::mkl::dft::descriptor<prec, dom>& desc);
+namespace detail {
+// Forward declarations
+class commit_impl;
+
+template <precision prec, domain dom>
+class descriptor;
+} // namespace detail
+
+namespace mklcpu {
+template <dft::detail::precision prec, dft::detail::domain dom>
+ONEMKL_EXPORT dft::detail::commit_impl* create_commit(dft::detail::descriptor<prec, dom>& desc);
 
 } // namespace mklcpu
 } // namespace dft

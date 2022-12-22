@@ -22,6 +22,7 @@
 namespace oneapi {
 namespace mkl {
 namespace dft {
+namespace detail {
 
 template <precision prec, domain dom>
 void descriptor<prec, dom>::set_value(config_param param, ...) {
@@ -40,24 +41,14 @@ void descriptor<prec, dom>::set_value(config_param param, ...) {
                 std::copy(strides, strides + rank_ + 1, std::back_inserter(values_.output_strides));
             break;
         }
-        case config_param::FORWARD_SCALE:
-            values_.fwd_scale = va_arg(vl, double);
-            break;
-        case config_param::BACKWARD_SCALE:
-            values_.bwd_scale = va_arg(vl, double);
-            break;
+        case config_param::FORWARD_SCALE: values_.fwd_scale = va_arg(vl, double); break;
+        case config_param::BACKWARD_SCALE: values_.bwd_scale = va_arg(vl, double); break;
         case config_param::NUMBER_OF_TRANSFORMS:
             values_.number_of_transforms = va_arg(vl, int64_t);
             break;
-        case config_param::FWD_DISTANCE:
-            values_.fwd_dist = va_arg(vl, int64_t);
-            break;
-        case config_param::BWD_DISTANCE:
-            values_.bwd_dist = va_arg(vl, int64_t);
-            break;
-        case config_param::PLACEMENT:
-            values_.placement = va_arg(vl, config_value);
-            break;
+        case config_param::FWD_DISTANCE: values_.fwd_dist = va_arg(vl, int64_t); break;
+        case config_param::BWD_DISTANCE: values_.bwd_dist = va_arg(vl, int64_t); break;
+        case config_param::PLACEMENT: values_.placement = va_arg(vl, config_value); break;
         case config_param::COMPLEX_STORAGE:
             values_.complex_storage = va_arg(vl, config_value);
             break;
@@ -117,6 +108,7 @@ template class descriptor<precision::SINGLE, domain::REAL>;
 template class descriptor<precision::DOUBLE, domain::COMPLEX>;
 template class descriptor<precision::DOUBLE, domain::REAL>;
 
+} //namespace detail
 } //namespace dft
 } //namespace mkl
 } //namespace oneapi
