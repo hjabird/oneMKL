@@ -54,6 +54,7 @@ ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESC_CF, float, std::complex<float>, std::com
 ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESC_RD, double, double, std::complex<double>)
 ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESC_CD, double, std::complex<double>, std::complex<double>)
 
+#undef ONEMKL_DFT_BACKWARD_INSTANTIATIONS
 #undef DOM_REAL
 #undef DOM_COMPLEX
 #undef PREC_F32
