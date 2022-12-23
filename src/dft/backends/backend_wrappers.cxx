@@ -17,6 +17,25 @@
 * SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
+/*
+This file lists functions matching those required by dft_function_table_t in 
+src/dft/function_table.hpp.
+
+To use this:
+
+#define WRAPPER_VERSION <Wrapper version number>
+#define BACKEND         <Backend name eg. mklgpu>
+
+extern "C" dft_function_table_t mkl_dft_table = {
+    WRAPPER_VERSION,
+#include "dft/backends/backend_wrappers.cxx"
+};
+
+Changes to this file should be matched to changes in function_table.hpp. The required 
+function template instantiations must be added to backend_backward_instantiations.cxx 
+and backend_forward_instantiations.cxx.
+*/
+
 oneapi::mkl::dft::BACKEND::create_commit, oneapi::mkl::dft::BACKEND::create_commit,
     oneapi::mkl::dft::BACKEND::create_commit, oneapi::mkl::dft::BACKEND::create_commit,
 #define ONEAPI_MKL_DFT_BACKEND_SIGNATURES(PRECISION, DOMAIN, T_REAL, T_FORWARD, T_BACKWARD)  \

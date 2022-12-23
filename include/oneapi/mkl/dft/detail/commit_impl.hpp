@@ -45,7 +45,7 @@ public:
               backend_(other.backend_),
               status(other.status) {}
 
-    virtual ~commit_impl() {}
+    virtual ~commit_impl() = default;
 
     sycl::queue& get_queue() {
         return queue_;
