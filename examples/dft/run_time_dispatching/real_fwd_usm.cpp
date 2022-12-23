@@ -40,14 +40,14 @@ void run_example(const sycl::device& dev) {
                 std::rethrow_exception(e);
             }
             catch (sycl::exception const& e) {
-                std::cerr << "Caught asynchronous SYCL exception during generation:" << std::endl;
+                std::cerr << "Caught asynchronous SYCL exception:" << std::endl;
                 std::cerr << "\t" << e.what() << std::endl;
             }
         }
         std::exit(2);
     };
 
-    std::cout << "DFTI example run_time dispatch" << std::endl;
+    std::cout << "DFT example run_time dispatch" << std::endl;
 
     sycl::queue sycl_queue(dev, exception_handler);
     auto x_usm = sycl::malloc_shared<float>(N * 2, sycl_queue);
@@ -64,16 +64,16 @@ void run_example(const sycl::device& dev) {
     desc.set_value(oneapi::mkl::dft::config_param::PLACEMENT,
                    oneapi::mkl::dft::config_value::INPLACE);
 
-    // 4. commit_descriptor (runtime xPU)
+    // 3. commit_descriptor (runtime dispatch)
     desc.commit(sycl_queue);
 
-    // 5. compute_forward / compute_backward (runtime xPU)
+    // 4. compute_forward / compute_backward (runtime dispatch)
     auto compute_event = oneapi::mkl::dft::compute_forward(desc, x_usm);
 
     // Do something with transformed data.
     compute_event.wait();
 
-    // 6. Free USM allocation.
+    // 5. Free USM allocation.
     sycl::free(x_usm, sycl_queue);
 }
 
@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     print_example_banner();
 
     try {
-        sycl::device my_dev((sycl::default_selector_v));
+        sycl::device my_dev((sycl::default_selector()));
 
         if (my_dev.is_gpu()) {
             std::cout << "Running DFT complex forward example on GPU device" << std::endl;
@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
         std::cout << "Running with single precision real data type:" << std::endl;
 
         run_example(my_dev);
-        std::cout << "DFIT example ran OK" << std::endl;
+        std::cout << "DFT example ran OK" << std::endl;
     }
     catch (sycl::exception const& e) {
         std::cerr << "Caught synchronous SYCL exception:" << std::endl;
@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
         return 1;
     }
     catch (std::exception const& e) {
-        std::cerr << "Caught std::exception during generation:" << std::endl;
+        std::cerr << "Caught std::exception:" << std::endl;
         std::cerr << "\t" << e.what() << std::endl;
         return 1;
     }

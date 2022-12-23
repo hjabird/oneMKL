@@ -28,7 +28,7 @@
 #endif
 #include "oneapi/mkl.hpp"
 
-void run_example(const sycl::device& gpu_deviceice) {
+void run_example(const sycl::device& gpu_device) {
     constexpr int N = 10;
 
     // Catch asynchronous exceptions for cpu
@@ -46,7 +46,7 @@ void run_example(const sycl::device& gpu_deviceice) {
         std::exit(2);
     };
 
-    sycl::queue gpu_queue(gpu_deviceice, gpu_error_handler);
+    sycl::queue gpu_queue(gpu_device, gpu_error_handler);
 
     std::vector<std::complex<float>> input_data(N);
     std::vector<std::complex<float>> output_data(N);
@@ -66,7 +66,7 @@ void run_example(const sycl::device& gpu_deviceice) {
     // 3. commit_descriptor (compile_time MKLGPU)
     desc.commit(oneapi::mkl::backend_selector<oneapi::mkl::backend::mklgpu>{ gpu_queue });
 
-    // 5. compute_forward / compute_backward (MKLGPU)
+    // 4. compute_forward / compute_backward (MKLGPU)
     {
         sycl::buffer<std::complex<float>> input_buffer(input_data.data(), sycl::range<1>(N));
         sycl::buffer<std::complex<float>> output_buffer(output_data.data(), sycl::range<1>(N));
