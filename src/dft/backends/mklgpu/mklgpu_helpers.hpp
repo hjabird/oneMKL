@@ -95,12 +95,9 @@ inline constexpr int to_mklgpu<dft::detail::config_param::COMPLEX_STORAGE>(
     if (value == dft::detail::config_value::COMPLEX_COMPLEX) {
         return DFTI_COMPLEX_COMPLEX;
     }
-    else if (value == dft::detail::config_value::REAL_REAL) {
-        return DFTI_REAL_REAL;
-    }
     else {
         throw mkl::invalid_argument("dft", "MKLGPU descriptor set_value()",
-                                    "Invalid config value for complex storage.");
+                                    "MKLGPU only supports complex-complex for complex storage.");
         return 0;
     }
 }
