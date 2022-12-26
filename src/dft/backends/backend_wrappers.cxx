@@ -52,6 +52,8 @@ oneapi::mkl::dft::BACKEND::create_commit,
     oneapi::mkl::dft::BACKEND::compute_forward<                                               \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_FORWARD, T_BACKWARD>,      \
     oneapi::mkl::dft::BACKEND::compute_forward<                                               \
+        oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>,             \
+    oneapi::mkl::dft::BACKEND::compute_forward<                                               \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD, T_BACKWARD>,     \
     oneapi::mkl::dft::BACKEND::compute_forward<                                               \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL,  T_REAL>,            \
@@ -64,6 +66,8 @@ oneapi::mkl::dft::BACKEND::create_commit,
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>,                     \
     oneapi::mkl::dft::BACKEND::compute_forward<                                               \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_FORWARD, T_BACKWARD>,      \
+    oneapi::mkl::dft::BACKEND::compute_forward<                                               \
+        oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>,             \
     oneapi::mkl::dft::BACKEND::compute_forward<                                               \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD, T_BACKWARD>,     \
     oneapi::mkl::dft::BACKEND::compute_forward<                                               \
@@ -78,6 +82,8 @@ oneapi::mkl::dft::BACKEND::create_commit,
     oneapi::mkl::dft::BACKEND::compute_backward<                                              \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD, T_FORWARD>,      \
     oneapi::mkl::dft::BACKEND::compute_backward<                                              \
+        oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>,             \
+    oneapi::mkl::dft::BACKEND::compute_backward<                                              \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD, T_BACKWARD>,     \
     oneapi::mkl::dft::BACKEND::compute_backward<                                              \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>,             \
@@ -90,6 +96,8 @@ oneapi::mkl::dft::BACKEND::create_commit,
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>,                     \
     oneapi::mkl::dft::BACKEND::compute_backward<                                              \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD, T_FORWARD>,      \
+    oneapi::mkl::dft::BACKEND::compute_backward<                                              \
+        oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>,             \
     oneapi::mkl::dft::BACKEND::compute_backward<                                              \
         oneapi::mkl::dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD, T_BACKWARD>,     \
     oneapi::mkl::dft::BACKEND::compute_backward<                                              \

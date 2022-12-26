@@ -38,6 +38,8 @@
     template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T>(                         \
         DESCRIPTOR_T & desc, sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &);                   \
     template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(                 \
+        DESCRIPTOR_T & desc, sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &);                   \
+    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(                 \
         DESCRIPTOR_T & desc, sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &,                    \
         sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &);                                        \
                                                                                                 \
@@ -49,6 +51,8 @@
     template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, BACKWARD_T, FORWARD_T>(   \
         DESCRIPTOR_T & desc, BACKWARD_T *, FORWARD_T *, DEPENDS_VEC_T);                         \
     template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T>(                  \
+        DESCRIPTOR_T & desc, REAL_T *, REAL_T *, DEPENDS_VEC_T);                                \
+    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(          \
         DESCRIPTOR_T & desc, REAL_T *, REAL_T *, DEPENDS_VEC_T);                                \
     template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(          \
         DESCRIPTOR_T & desc, REAL_T *, REAL_T *, REAL_T *, REAL_T *, DEPENDS_VEC_T);
