@@ -36,6 +36,12 @@ namespace oneapi {
 namespace mkl {
 namespace dft {
 namespace detail {
+// Forward declaration:
+template <precision prec, domain dom>
+class descriptor;
+
+template <precision prec, domain dom>
+inline commit_impl* get_commit(descriptor<prec, dom>& desc);
 
 template <precision prec, domain dom>
 class descriptor {
@@ -70,7 +76,7 @@ public:
     };
 
 private:
-    std::unique_ptr<detail::commit_impl> pimpl_; // commit only
+    std::unique_ptr<commit_impl> pimpl_; // commit only
     sycl::queue queue_;
 
     std::int64_t rank_;
@@ -78,7 +84,14 @@ private:
 
     // descriptor configuration values_ and structs
     dft_values<prec, dom> values_;
+
+    friend commit_impl* get_commit<prec, dom>(descriptor<prec, dom>&);
 };
+
+template <precision prec, domain dom>
+inline commit_impl* get_commit(descriptor<prec, dom>& desc) {
+    return desc.pimpl_.get();
+}
 
 } // namespace detail
 } // namespace dft
