@@ -218,7 +218,7 @@ struct set_value_helper<config_param::INPUT_STRIDES, prec, dom> {
         if (set_val == nullptr) {
             throw mkl::invalid_argument("DFT", "set_value", "Given nullptr.");
         }
-        std::copy(set_val, set_val + vals.rank, vals.input_strides.begin());
+        std::copy(set_val, set_val + vals.rank + 1, vals.input_strides.begin());
     }
 };
 
@@ -231,7 +231,7 @@ struct set_value_helper<config_param::OUTPUT_STRIDES, prec, dom> {
         if (set_val == nullptr) {
             throw mkl::invalid_argument("DFT", "set_value", "Given nullptr.");
         }
-        std::copy(set_val, set_val + vals.rank, vals.output_strides.begin());
+        std::copy(set_val, set_val + vals.rank + 1, vals.output_strides.begin());
     }
 };
 
