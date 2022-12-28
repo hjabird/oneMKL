@@ -41,7 +41,7 @@ namespace mklcpu {
 template <precision prec, domain dom>
 class commit_derived_impl : public detail::commit_impl {
 public:
-    commit_derived_impl(sycl::queue queue, dft_values config_values)
+    commit_derived_impl(sycl::queue queue, detail::dft_values<prec, dom> config_values)
             : detail::commit_impl(queue),
               status(DFT_NOTSET) {
         if (config_values.rank == 1) {
@@ -102,7 +102,7 @@ private:
         return value_err;
     }
 
-    void set_value(DFTI_DESCRIPTOR_HANDLE& descHandle, dft_values config) {
+    void set_value(DFTI_DESCRIPTOR_HANDLE& descHandle, detail::dft_values<prec, dom> config) {
         set_value_item(descHandle, DFTI_INPUT_STRIDES, config.input_strides.data());
         set_value_item(descHandle, DFTI_OUTPUT_STRIDES, config.output_strides.data());
         set_value_item(descHandle, DFTI_BACKWARD_SCALE, config.bwd_scale);

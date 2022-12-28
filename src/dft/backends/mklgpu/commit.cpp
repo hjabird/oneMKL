@@ -58,7 +58,7 @@ private:
     using mklgpu_descriptor_t = dft::descriptor<mklgpu_prec, mklgpu_dom>;
 
 public:
-    commit_derived_impl(sycl::queue queue, dft::detail::dft_values config_values)
+    commit_derived_impl(sycl::queue queue, dft::detail::dft_values<prec, dom> config_values)
             : oneapi::mkl::dft::detail::commit_impl(queue),
               handle(config_values.dimensions) {
         set_value(handle, config_values);
@@ -84,7 +84,7 @@ private:
     // The native MKLGPU class.
     mklgpu_descriptor_t handle;
 
-    void set_value(mklgpu_descriptor_t& desc, dft::detail::dft_values config) {
+    void set_value(mklgpu_descriptor_t& desc, dft::detail::dft_values<prec, dom> config) {
         using onemkl_param = dft::detail::config_param;
         using backend_param = dft::config_param;
 
@@ -96,19 +96,29 @@ private:
         desc.set_value(backend_param::NUMBER_OF_TRANSFORMS, config.number_of_transforms);
         desc.set_value(backend_param::COMPLEX_STORAGE,
                        to_mklgpu<onemkl_param::COMPLEX_STORAGE>(config.complex_storage));
-        // Conjugate even storage only supports COMPLEX_COMPLEX. to_mklgpu will throw on invalid config.
-        (void)to_mklgpu<onemkl_param::CONJUGATE_EVEN_STORAGE>(config.conj_even_storage);
+        if (config.real_storage != dft::detail::config_value::REAL_REAL) {
+            throw mkl::invalid_argument("DFT", "commit",
+                                        "MKLGPU only supports real-real real storage.");
+        }
+        desc.set_value(backend_param::CONJUGATE_EVEN_STORAGE,
+                       to_mklgpu<onemkl_param::CONJUGATE_EVEN_STORAGE>(config.conj_even_storage));
         desc.set_value(backend_param::PLACEMENT,
                        to_mklgpu<onemkl_param::PLACEMENT>(config.placement));
         desc.set_value(backend_param::INPUT_STRIDES, config.input_strides.data());
         desc.set_value(backend_param::OUTPUT_STRIDES, config.output_strides.data());
         desc.set_value(backend_param::FWD_DISTANCE, config.fwd_dist);
         desc.set_value(backend_param::BWD_DISTANCE, config.bwd_dist);
-        // Leave backend_param::REAL_STORAGE as default value (exists as config param, but no value in dft_values)
-        // Leave backend_param::WORKSPACE as default value.
-        // Leave backend_param::ORDERING as default value.
-        // Leave backend_param::TRANSPOSE as false (default value).
-        // Leave backend_param::PACKED_FORMAT as only available value: CCE_FORMAT.
+        // Setting the workspace causes an FFT_INVALID_DESCRIPTOR.
+        // Setting the ordering causes an FFT_INVALID_DESCRIPTOR. Check that default is used:
+        if (config.ordering != dft::detail::config_value::ORDERED) {
+            throw mkl::invalid_argument("DFT", "commit", "MKLGPU only supports ordered ordering.");
+        }
+        // Setting the transpose causes an FFT_INVALID_DESCRIPTOR. Check that default is used:
+        if (config.transpose != false) {
+            throw mkl::invalid_argument("DFT", "commit", "MKLGPU only supports non-transposed.");
+        }
+        desc.set_value(backend_param::PACKED_FORMAT,
+                       to_mklgpu<onemkl_param::PACKED_FORMAT>(config.packed_format));
     }
 };
 } // namespace detail

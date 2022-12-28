@@ -76,7 +76,8 @@ inline constexpr dft::config_param to_mklgpu(dft::detail::config_param param) {
         case iparam::PACKED_FORMAT: return oparam::PACKED_FORMAT;
         case iparam::COMMIT_STATUS: return oparam::COMMIT_STATUS;
         default:
-            mkl::invalid_argument("dft", "MKLGPU descriptor set_value()", "Invalid config param.");
+            throw mkl::invalid_argument("dft", "MKLGPU descriptor set_value()",
+                                        "Invalid config param.");
             return static_cast<oparam>(0);
     }
 }
@@ -94,12 +95,9 @@ inline constexpr int to_mklgpu<dft::detail::config_param::COMPLEX_STORAGE>(
     if (value == dft::detail::config_value::COMPLEX_COMPLEX) {
         return DFTI_COMPLEX_COMPLEX;
     }
-    else if (value == dft::detail::config_value::REAL_REAL) {
-        return DFTI_COMPLEX_REAL;
-    }
     else {
-        mkl::invalid_argument("dft", "MKLGPU descriptor set_value()",
-                              "Invalid config value for complex storage.");
+        throw mkl::unimplemented("dft", "MKLGPU descriptor set_value()",
+                                 "MKLGPU only supports complex-complex for complex storage.");
         return 0;
     }
 }
@@ -111,8 +109,8 @@ inline constexpr int to_mklgpu<dft::detail::config_param::CONJUGATE_EVEN_STORAGE
         return DFTI_COMPLEX_COMPLEX;
     }
     else {
-        mkl::invalid_argument("dft", "MKLGPU descriptor set_value()",
-                              "Invalid config value for conjugate even storage.");
+        throw mkl::invalid_argument("dft", "MKLGPU descriptor set_value()",
+                                    "Invalid config value for conjugate even storage.");
         return 0;
     }
 }
@@ -127,12 +125,24 @@ inline constexpr int to_mklgpu<dft::detail::config_param::PLACEMENT>(
         return DFTI_NOT_INPLACE;
     }
     else {
-        mkl::invalid_argument("dft", "MKLGPU descriptor set_value()",
-                              "Invalid config value for inplace.");
+        throw mkl::invalid_argument("dft", "MKLGPU descriptor set_value()",
+                                    "Invalid config value for inplace.");
         return 0;
     }
 }
 
+template <>
+inline constexpr int to_mklgpu<dft::detail::config_param::PACKED_FORMAT>(
+    dft::detail::config_value value) {
+    if (value == dft::detail::config_value::CCE_FORMAT) {
+        return DFTI_CCE_FORMAT;
+    }
+    else {
+        throw mkl::invalid_argument("dft", "MKLGPU descriptor set_value()",
+                                    "Invalid config value for packed format.");
+        return 0;
+    }
+}
 } // namespace detail
 } // namespace mklgpu
 } // namespace dft
