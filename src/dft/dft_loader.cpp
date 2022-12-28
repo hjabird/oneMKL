@@ -67,12 +67,20 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                                                                         \
     /*Buffer version*/                                                                                  \
                                                                                                         \
-    /*In-place transform*/                                                                              \
+    /*In-place transform - real*/                                                                       \
     template <>                                                                                         \
-    ONEMKL_EXPORT void compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_FORWARD>(          \
-        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_FORWARD, 1> & inout) {        \
+    ONEMKL_EXPORT void compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>(             \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_REAL, 1> & inout) {           \
         detail::function_tables[get_device_id(desc.get_queue())]                                        \
-            .compute_forward_buffer_inplace_##EXT(desc, inout);                                         \
+            .compute_forward_buffer_inplace_real_##EXT(desc, inout);                                    \
+    }                                                                                                   \
+                                                                                                        \
+    /*In-place transform - complex*/                                                                    \
+    template <>                                                                                         \
+    ONEMKL_EXPORT void compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD>(         \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_BACKWARD, 1> & inout) {       \
+        detail::function_tables[get_device_id(desc.get_queue())]                                        \
+            .compute_forward_buffer_inplace_complex_##EXT(desc, inout);                                 \
     }                                                                                                   \
                                                                                                         \
     /*In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/     \
@@ -94,6 +102,16 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
             .compute_forward_buffer_outofplace_##EXT(desc, in, out);                                    \
     }                                                                                                   \
                                                                                                         \
+    /*Out-of-place transform - real*/                                                                   \
+    template <>                                                                                         \
+    ONEMKL_EXPORT void                                                                                  \
+    compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>(                        \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_REAL, 1> & in,                \
+        sycl::buffer<T_REAL, 1> & out) {                                                                \
+        detail::function_tables[get_device_id(desc.get_queue())]                                        \
+            .compute_forward_buffer_outofplace_real_##EXT(desc, in, out);                               \
+    }                                                                                                   \
+                                                                                                        \
     /*Out-of-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/ \
     template <>                                                                                         \
     ONEMKL_EXPORT void                                                                                  \
@@ -107,14 +125,23 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                                                                         \
     /*USM version*/                                                                                     \
                                                                                                         \
-    /*In-place transform*/                                                                              \
+    /*In-place transform - real*/                                                                       \
     template <>                                                                                         \
-    ONEMKL_EXPORT sycl::event                                                                           \
-    compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_FORWARD>(                             \
-        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_FORWARD * inout,                           \
+    ONEMKL_EXPORT sycl::event compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>(      \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_REAL * inout,                              \
         const std::vector<sycl::event>& dependencies) {                                                 \
         return detail::function_tables[get_device_id(desc.get_queue())]                                 \
-            .compute_forward_usm_inplace_##EXT(desc, inout, dependencies);                              \
+            .compute_forward_usm_inplace_real_##EXT(desc, inout, dependencies);                         \
+    }                                                                                                   \
+                                                                                                        \
+    /*In-place transform - complex*/                                                                    \
+    template <>                                                                                         \
+    ONEMKL_EXPORT sycl::event                                                                           \
+    compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD>(                            \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_BACKWARD * inout,                          \
+        const std::vector<sycl::event>& dependencies) {                                                 \
+        return detail::function_tables[get_device_id(desc.get_queue())]                                 \
+            .compute_forward_usm_inplace_complex_##EXT(desc, inout, dependencies);                      \
     }                                                                                                   \
                                                                                                         \
     /*In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/     \
@@ -136,6 +163,16 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
             .compute_forward_usm_outofplace_##EXT(desc, in, out, dependencies);                         \
     }                                                                                                   \
                                                                                                         \
+    /*Out-of-place transform*/                                                                          \
+    template <>                                                                                         \
+    ONEMKL_EXPORT sycl::event                                                                           \
+    compute_forward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>(                        \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_REAL * in, T_REAL * out,                   \
+        const std::vector<sycl::event>& dependencies) {                                                 \
+        return detail::function_tables[get_device_id(desc.get_queue())]                                 \
+            .compute_forward_usm_outofplace_real_##EXT(desc, in, out, dependencies);                    \
+    }                                                                                                   \
+                                                                                                        \
     /*Out-of-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/ \
     template <>                                                                                         \
     ONEMKL_EXPORT sycl::event                                                                           \
@@ -149,12 +186,20 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                                                                         \
     /*Buffer version*/                                                                                  \
                                                                                                         \
-    /*In-place transform*/                                                                              \
+    /*In-place transform - real*/                                                                       \
+    template <>                                                                                         \
+    ONEMKL_EXPORT void compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>(            \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_REAL, 1> & inout) {           \
+        detail::function_tables[get_device_id(desc.get_queue())]                                        \
+            .compute_backward_buffer_inplace_real_##EXT(desc, inout);                                   \
+    }                                                                                                   \
+                                                                                                        \
+    /*In-place transform - complex */                                                                   \
     template <>                                                                                         \
     ONEMKL_EXPORT void compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD>(        \
         dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_BACKWARD, 1> & inout) {       \
         detail::function_tables[get_device_id(desc.get_queue())]                                        \
-            .compute_backward_buffer_inplace_##EXT(desc, inout);                                        \
+            .compute_backward_buffer_inplace_complex_##EXT(desc, inout);                                \
     }                                                                                                   \
                                                                                                         \
     /*In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/     \
@@ -176,6 +221,16 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
             .compute_backward_buffer_outofplace_##EXT(desc, in, out);                                   \
     }                                                                                                   \
                                                                                                         \
+    /*Out-of-place transform - real*/                                                                   \
+    template <>                                                                                         \
+    ONEMKL_EXPORT void                                                                                  \
+    compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>(                       \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, sycl::buffer<T_REAL, 1> & in,                \
+        sycl::buffer<T_REAL, 1> & out) {                                                                \
+        detail::function_tables[get_device_id(desc.get_queue())]                                        \
+            .compute_backward_buffer_outofplace_real_##EXT(desc, in, out);                              \
+    }                                                                                                   \
+                                                                                                        \
     /*Out-of-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/ \
     template <>                                                                                         \
     ONEMKL_EXPORT void                                                                                  \
@@ -189,14 +244,24 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                                                                         \
     /*USM version*/                                                                                     \
                                                                                                         \
-    /*In-place transform*/                                                                              \
+    /*In-place transform - real*/                                                                       \
+    template <>                                                                                         \
+    ONEMKL_EXPORT sycl::event                                                                           \
+    compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL>(                               \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_REAL * inout,                              \
+        const std::vector<sycl::event>& dependencies) {                                                 \
+        return detail::function_tables[get_device_id(desc.get_queue())]                                 \
+            .compute_backward_usm_inplace_real_##EXT(desc, inout, dependencies);                        \
+    }                                                                                                   \
+                                                                                                        \
+    /*In-place transform - complex*/                                                                    \
     template <>                                                                                         \
     ONEMKL_EXPORT sycl::event                                                                           \
     compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_BACKWARD>(                           \
         dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_BACKWARD * inout,                          \
         const std::vector<sycl::event>& dependencies) {                                                 \
         return detail::function_tables[get_device_id(desc.get_queue())]                                 \
-            .compute_backward_usm_inplace_##EXT(desc, inout, dependencies);                             \
+            .compute_backward_usm_inplace_complex_##EXT(desc, inout, dependencies);                     \
     }                                                                                                   \
                                                                                                         \
     /*In-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/     \
@@ -219,6 +284,16 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
             .compute_backward_usm_outofplace_##EXT(desc, in, out, dependencies);                        \
     }                                                                                                   \
                                                                                                         \
+    /*Out-of-place transform - real*/                                                                   \
+    template <>                                                                                         \
+    ONEMKL_EXPORT sycl::event                                                                           \
+    compute_backward<dft::detail::descriptor<PRECISION, DOMAIN>, T_REAL, T_REAL>(                       \
+        dft::detail::descriptor<PRECISION, DOMAIN> & desc, T_REAL * in, T_REAL * out,                   \
+        const std::vector<sycl::event>& dependencies) {                                                 \
+        return detail::function_tables[get_device_id(desc.get_queue())]                                 \
+            .compute_backward_usm_outofplace_real_##EXT(desc, in, out, dependencies);                   \
+    }                                                                                                   \
+                                                                                                        \
     /*Out-of-place transform, using config_param::COMPLEX_STORAGE=config_value::REAL_REAL data format*/ \
     template <>                                                                                         \
     ONEMKL_EXPORT sycl::event                                                                           \
@@ -230,12 +305,57 @@ commit_impl* create_commit<precision::DOUBLE, domain::REAL>(
                                                          dependencies);                                 \
     }
 
+// Signatures with forward_t=complex, backwards_t=complex are already instantiated for complex domain
+// but not real domain.
+#define ONEAPI_MKL_DFT_REAL_ONLY_SIGNATURES(EXT, PRECISION, T_COMPLEX)                            \
+    /*Out-of-place transform - complex*/                                                          \
+    template <>                                                                                   \
+    ONEMKL_EXPORT void                                                                            \
+    compute_forward<dft::detail::descriptor<PRECISION, domain::REAL>, T_COMPLEX, T_COMPLEX>(      \
+        dft::detail::descriptor<PRECISION, domain::REAL> & desc, sycl::buffer<T_COMPLEX, 1> & in, \
+        sycl::buffer<T_COMPLEX, 1> & out) {                                                       \
+        detail::function_tables[get_device_id(desc.get_queue())]                                  \
+            .compute_forward_buffer_outofplace_complex_##EXT(desc, in, out);                      \
+    }                                                                                             \
+                                                                                                  \
+    /*Out-of-place transform - complex*/                                                          \
+    template <>                                                                                   \
+    ONEMKL_EXPORT sycl::event                                                                     \
+    compute_forward<dft::detail::descriptor<PRECISION, domain::REAL>, T_COMPLEX, T_COMPLEX>(      \
+        dft::detail::descriptor<PRECISION, domain::REAL> & desc, T_COMPLEX * in, T_COMPLEX * out, \
+        const std::vector<sycl::event>& dependencies) {                                           \
+        return detail::function_tables[get_device_id(desc.get_queue())]                           \
+            .compute_forward_usm_outofplace_complex_##EXT(desc, in, out, dependencies);           \
+    }                                                                                             \
+                                                                                                  \
+    /*Out-of-place transform - complex*/                                                          \
+    template <>                                                                                   \
+    ONEMKL_EXPORT void                                                                            \
+    compute_backward<dft::detail::descriptor<PRECISION, domain::REAL>, T_COMPLEX, T_COMPLEX>(     \
+        dft::detail::descriptor<PRECISION, domain::REAL> & desc, sycl::buffer<T_COMPLEX, 1> & in, \
+        sycl::buffer<T_COMPLEX, 1> & out) {                                                       \
+        detail::function_tables[get_device_id(desc.get_queue())]                                  \
+            .compute_backward_buffer_outofplace_complex_##EXT(desc, in, out);                     \
+    }                                                                                             \
+                                                                                                  \
+    /*Out-of-place transform - complex*/                                                          \
+    template <>                                                                                   \
+    ONEMKL_EXPORT sycl::event                                                                     \
+    compute_backward<dft::detail::descriptor<PRECISION, domain::REAL>, T_COMPLEX, T_COMPLEX>(     \
+        dft::detail::descriptor<PRECISION, domain::REAL> & desc, T_COMPLEX * in, T_COMPLEX * out, \
+        const std::vector<sycl::event>& dependencies) {                                           \
+        return detail::function_tables[get_device_id(desc.get_queue())]                           \
+            .compute_backward_usm_outofplace_complex_##EXT(desc, in, out, dependencies);          \
+    }
+
 ONEAPI_MKL_DFT_SIGNATURES(f, dft::detail::precision::SINGLE, dft::detail::domain::REAL, float,
                           float, std::complex<float>)
+ONEAPI_MKL_DFT_REAL_ONLY_SIGNATURES(f, dft::detail::precision::SINGLE, std::complex<float>)
 ONEAPI_MKL_DFT_SIGNATURES(c, dft::detail::precision::SINGLE, dft::detail::domain::COMPLEX, float,
                           std::complex<float>, std::complex<float>)
 ONEAPI_MKL_DFT_SIGNATURES(d, dft::detail::precision::DOUBLE, dft::detail::domain::REAL, double,
                           double, std::complex<double>)
+ONEAPI_MKL_DFT_REAL_ONLY_SIGNATURES(d, dft::detail::precision::DOUBLE, std::complex<double>)
 ONEAPI_MKL_DFT_SIGNATURES(z, dft::detail::precision::DOUBLE, dft::detail::domain::COMPLEX, double,
                           std::complex<double>, std::complex<double>)
 #undef ONEAPI_MKL_DFT_SIGNATURES

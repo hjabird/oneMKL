@@ -27,31 +27,49 @@
 #define DESC_CD       dft::detail::descriptor<PREC_D, DOM_COMPLEX>
 #define DEPENDS_VEC_T const std::vector<sycl::event> &
 
-#define ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESCRIPTOR_T, REAL_T, FORWARD_T, BACKWARD_T)       \
-    /* Buffer API */                                                                          \
-    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, BACKWARD_T>(                   \
-        DESCRIPTOR_T & desc, sycl::buffer<BACKWARD_T> &);                                     \
-    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, BACKWARD_T, FORWARD_T>(        \
-        DESCRIPTOR_T & desc, sycl::buffer<BACKWARD_T> &, sycl::buffer<FORWARD_T> &);          \
-    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T>(                       \
-        DESCRIPTOR_T & desc, sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &);                 \
-    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(               \
-        DESCRIPTOR_T & desc, sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &,                  \
-        sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &);                                      \
-                                                                                              \
-    /* USM API */                                                                             \
-    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, BACKWARD_T>(            \
-        DESCRIPTOR_T & desc, BACKWARD_T *, DEPENDS_VEC_T);                                    \
-    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, BACKWARD_T, FORWARD_T>( \
-        DESCRIPTOR_T & desc, BACKWARD_T *, FORWARD_T *, DEPENDS_VEC_T);                       \
-    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T>(                \
-        DESCRIPTOR_T & desc, REAL_T *, REAL_T *, DEPENDS_VEC_T);                              \
-    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(        \
+#define ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESCRIPTOR_T, REAL_T, FORWARD_T, BACKWARD_T)         \
+    /* Buffer API */                                                                            \
+    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T>(DESCRIPTOR_T & desc,     \
+                                                                       sycl::buffer<REAL_T> &); \
+    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, BACKWARD_T>(                     \
+        DESCRIPTOR_T & desc, sycl::buffer<BACKWARD_T> &);                                       \
+    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, BACKWARD_T, FORWARD_T>(          \
+        DESCRIPTOR_T & desc, sycl::buffer<BACKWARD_T> &, sycl::buffer<FORWARD_T> &);            \
+    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T>(                         \
+        DESCRIPTOR_T & desc, sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &);                   \
+    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(                 \
+        DESCRIPTOR_T & desc, sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &);                   \
+    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(                 \
+        DESCRIPTOR_T & desc, sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &,                    \
+        sycl::buffer<REAL_T> &, sycl::buffer<REAL_T> &);                                        \
+                                                                                                \
+    /* USM API */                                                                               \
+    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T>(                  \
+        DESCRIPTOR_T & desc, REAL_T *, DEPENDS_VEC_T);                                          \
+    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, BACKWARD_T>(              \
+        DESCRIPTOR_T & desc, BACKWARD_T *, DEPENDS_VEC_T);                                      \
+    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, BACKWARD_T, FORWARD_T>(   \
+        DESCRIPTOR_T & desc, BACKWARD_T *, FORWARD_T *, DEPENDS_VEC_T);                         \
+    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T>(                  \
+        DESCRIPTOR_T & desc, REAL_T *, REAL_T *, DEPENDS_VEC_T);                                \
+    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(          \
+        DESCRIPTOR_T & desc, REAL_T *, REAL_T *, DEPENDS_VEC_T);                                \
+    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, REAL_T, REAL_T>(          \
         DESCRIPTOR_T & desc, REAL_T *, REAL_T *, REAL_T *, REAL_T *, DEPENDS_VEC_T);
 
+#define ONEMKL_DFT_BACKWARD_INSTANTIATIONS_REAL_ONLY(DESCRIPTOR_T, COMPLEX_T)                \
+    /* Buffer API */                                                                         \
+    template ONEMKL_EXPORT void compute_backward<DESCRIPTOR_T, COMPLEX_T, COMPLEX_T>(        \
+        DESCRIPTOR_T & desc, sycl::buffer<COMPLEX_T> &, sycl::buffer<COMPLEX_T> &);          \
+    /* USM API */                                                                            \
+    template ONEMKL_EXPORT sycl::event compute_backward<DESCRIPTOR_T, COMPLEX_T, COMPLEX_T>( \
+        DESCRIPTOR_T & desc, COMPLEX_T *, COMPLEX_T *, DEPENDS_VEC_T);
+
 ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESC_RF, float, float, std::complex<float>)
+ONEMKL_DFT_BACKWARD_INSTANTIATIONS_REAL_ONLY(DESC_RF, std::complex<float>)
 ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESC_CF, float, std::complex<float>, std::complex<float>)
 ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESC_RD, double, double, std::complex<double>)
+ONEMKL_DFT_BACKWARD_INSTANTIATIONS_REAL_ONLY(DESC_RD, std::complex<double>)
 ONEMKL_DFT_BACKWARD_INSTANTIATIONS(DESC_CD, double, std::complex<double>, std::complex<double>)
 
 #undef ONEMKL_DFT_BACKWARD_INSTANTIATIONS

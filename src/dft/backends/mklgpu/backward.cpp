@@ -58,6 +58,9 @@ inline auto compute_backward(dft::detail::descriptor<prec, dom> &desc, ArgTs &&.
         throw mkl::invalid_argument("DFT", "compute_backward",
                                     "MKLGPU DFT descriptor was not successfully committed.");
     }
+    // The MKLGPU backend's iterface contains fewer function signatures than in this
+    // open-source library. Consequently, it is not required to forward template arguments
+    // to resolve to the correct function.
     return dft::compute_backward(*mklgpu_desc, std::forward<ArgTs>(args)...);
 }
 
@@ -87,12 +90,8 @@ ONEMKL_EXPORT void compute_backward(descriptor_type &desc, sycl::buffer<data_typ
 template <typename descriptor_type, typename data_type>
 ONEMKL_EXPORT void compute_backward(descriptor_type &desc, sycl::buffer<data_type, 1> &inout_re,
                                     sycl::buffer<data_type, 1> &inout_im) {
-    detail::expect_config<dft::detail::config_param::PLACEMENT, dft::detail::config_value::INPLACE>(
-        desc, "Unexpected value for placement");
-    detail::expect_config<dft::detail::config_param::COMPLEX_STORAGE,
-                          dft::detail::config_value::REAL_REAL>(
-        desc, "Unexpected value for complex storage");
-    return detail::compute_backward(desc, inout_re, inout_im);
+    throw mkl::unimplemented("DFT", "compute_backward",
+                             "MKLGPU does not support compute_backward(desc, inout_re, inout_im).");
 }
 
 //Out-of-place transform
@@ -142,12 +141,8 @@ template <typename descriptor_type, typename data_type>
 ONEMKL_EXPORT sycl::event compute_backward(descriptor_type &desc, data_type *inout_re,
                                            data_type *inout_im,
                                            const std::vector<sycl::event> &dependencies) {
-    detail::expect_config<dft::detail::config_param::PLACEMENT, dft::detail::config_value::INPLACE>(
-        desc, "Unexpected value for placement");
-    detail::expect_config<dft::detail::config_param::COMPLEX_STORAGE,
-                          dft::detail::config_value::REAL_REAL>(
-        desc, "Unexpected value for complex storage");
-    return detail::compute_backward(desc, inout_re, inout_im, dependencies);
+    throw mkl::unimplemented("DFT", "compute_backward",
+                             "MKLGPU does not support compute_backward(desc, inout_re, inout_im).");
 }
 
 //Out-of-place transform
