@@ -75,12 +75,30 @@ inline hipStream_t setup_stream(const std::string &func, sycl::interop_handle &i
     return stream;
 }
 
-inline void sync_checked(const std::string &func, hipStream_t stream) {
-    auto result = hipStreamSynchronize(stream);
-    if (result != hipSuccess) {
-        throw oneapi::mkl::exception("dft/backends/rocfft", func,
-                                     "hipStreamSynchronize returned " + std::to_string(result));
+inline void wait_on_hip_events(hipStream_t stream) {
+    for (hipEvent e : ih.get_native_events<sycl::backend::ext_oneapi_hip>()) {
+        auto result = hipStreamWaitEvent(stream, e, 0);
+        if (result != hipSuccess) {
+            throw oneapi::mkl::exception(
+                "dft/backends/rocfft", func,
+                "hipStreamWaitEvent returned " + std::to_string(result_create));
+        }
     }
+}
+
+inline void add_hip_event(sycl::interop_handle &ih, const std::string &func, hipStream_t stream) {
+    hipEvent e;
+    auto result_create = hipEventCreate(&e, CU_EVENT_DISABLE_TIMING);
+    if (result_create != hipSuccess) {
+        throw oneapi::mkl::exception("dft/backends/rocfft", func,
+                                     "hipEventCreate returned " + std::to_string(result_create));
+    }
+    hipEventRecord(e, stream);
+    if (result_record != hipSuccess) {
+        throw oneapi::mkl::exception("dft/backends/rocfft", func,
+                                     "hipEventRecord returned " + std::to_string(result_record));
+    }
+    ih.add_native_events<sycl::backend::ext_oneapi_hip>({ e });
 }
 
 inline void execute_checked(const std::string &func, const rocfft_plan plan, void *in_buffer[],

@@ -81,15 +81,18 @@ ONEMKL_EXPORT void compute_forward(descriptor_type &desc,
         auto inout_acc = inout.template get_access<sycl::access::mode::read_write>(cgh);
         commit->add_buffer_workspace_dependency_if_rqd("compute_forward", cgh);
 
-        cgh.host_task([=](sycl::interop_handle ih) {
-            auto stream = detail::setup_stream(func_name, ih, info);
+        cgh.host_task(
+            [=](sycl::interop_handle ih) {
+                auto stream = detail::setup_stream(func_name, ih, info);
+                detail::wait_on_hip_events(stream);
 
-            auto inout_native = reinterpret_cast<void *>(
-                reinterpret_cast<fwd<descriptor_type> *>(detail::native_mem(ih, inout_acc)) +
-                offsets[0]);
-            detail::execute_checked(func_name, plan, &inout_native, nullptr, info);
-            detail::sync_checked(func_name, stream);
-        });
+                auto inout_native = reinterpret_cast<void *>(
+                    reinterpret_cast<fwd<descriptor_type> *>(detail::native_mem(ih, inout_acc)) +
+                    offsets[0]);
+                detail::execute_checked(func_name, plan, &inout_native, nullptr, info);
+                detail::add_hip_event(ih, func_name, stream);
+            },
+            { sycl::ext::codeplay::experimental::property::host_task::manual_interop_sync() });
     });
 }
 
@@ -116,20 +119,23 @@ ONEMKL_EXPORT void compute_forward(descriptor_type &desc,
         auto inout_im_acc = inout_im.template get_access<sycl::access::mode::read_write>(cgh);
         commit->add_buffer_workspace_dependency_if_rqd("compute_forward", cgh);
 
-        cgh.host_task([=](sycl::interop_handle ih) {
-            auto stream = detail::setup_stream(func_name, ih, info);
+        cgh.host_task(
+            [=](sycl::interop_handle ih) {
+                auto stream = detail::setup_stream(func_name, ih, info);
+                detail::wait_on_hip_events(stream);
 
-            std::array<void *, 2> inout_native{
-                reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
-                                             detail::native_mem(ih, inout_re_acc)) +
-                                         offsets[0]),
-                reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
-                                             detail::native_mem(ih, inout_im_acc)) +
-                                         offsets[0])
-            };
-            detail::execute_checked(func_name, plan, inout_native.data(), nullptr, info);
-            detail::sync_checked(func_name, stream);
-        });
+                std::array<void *, 2> inout_native{
+                    reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
+                                                 detail::native_mem(ih, inout_re_acc)) +
+                                             offsets[0]),
+                    reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
+                                                 detail::native_mem(ih, inout_im_acc)) +
+                                             offsets[0])
+                };
+                detail::execute_checked(func_name, plan, inout_native.data(), nullptr, info);
+                detail::add_hip_event(ih, func_name, stream);
+            },
+            { sycl::ext::codeplay::experimental::property::host_task::manual_interop_sync() });
     });
 }
 
@@ -150,19 +156,22 @@ ONEMKL_EXPORT void compute_forward(descriptor_type &desc, sycl::buffer<fwd<descr
         auto out_acc = out.template get_access<sycl::access::mode::read_write>(cgh);
         commit->add_buffer_workspace_dependency_if_rqd("compute_forward", cgh);
 
-        cgh.host_task([=](sycl::interop_handle ih) {
-            const std::string func_name = "compute_forward(desc, in, out)";
-            auto stream = detail::setup_stream(func_name, ih, info);
+        cgh.host_task(
+            [=](sycl::interop_handle ih) {
+                const std::string func_name = "compute_forward(desc, in, out)";
+                auto stream = detail::setup_stream(func_name, ih, info);
+                detail::wait_on_hip_events(stream);
 
-            auto in_native = reinterpret_cast<void *>(
-                reinterpret_cast<fwd<descriptor_type> *>(detail::native_mem(ih, in_acc)) +
-                offsets[0]);
-            auto out_native = reinterpret_cast<void *>(
-                reinterpret_cast<bwd<descriptor_type> *>(detail::native_mem(ih, out_acc)) +
-                offsets[1]);
-            detail::execute_checked(func_name, plan, &in_native, &out_native, info);
-            detail::sync_checked(func_name, stream);
-        });
+                auto in_native = reinterpret_cast<void *>(
+                    reinterpret_cast<fwd<descriptor_type> *>(detail::native_mem(ih, in_acc)) +
+                    offsets[0]);
+                auto out_native = reinterpret_cast<void *>(
+                    reinterpret_cast<bwd<descriptor_type> *>(detail::native_mem(ih, out_acc)) +
+                    offsets[1]);
+                detail::execute_checked(func_name, plan, &in_native, &out_native, info);
+                detail::add_hip_event(ih, func_name, stream);
+            },
+            { sycl::ext::codeplay::experimental::property::host_task::manual_interop_sync() });
     });
 }
 
@@ -186,29 +195,32 @@ ONEMKL_EXPORT void compute_forward(descriptor_type &desc,
         auto out_im_acc = out_im.template get_access<sycl::access::mode::read_write>(cgh);
         commit->add_buffer_workspace_dependency_if_rqd("compute_forward", cgh);
 
-        cgh.host_task([=](sycl::interop_handle ih) {
-            const std::string func_name = "compute_forward(desc, in_re, in_im, out_re, out_im)";
-            auto stream = detail::setup_stream(func_name, ih, info);
+        cgh.host_task(
+            [=](sycl::interop_handle ih) {
+                const std::string func_name = "compute_forward(desc, in_re, in_im, out_re, out_im)";
+                auto stream = detail::setup_stream(func_name, ih, info);
+                detail::wait_on_hip_events(stream);
 
-            std::array<void *, 2> in_native{
-                reinterpret_cast<void *>(
-                    reinterpret_cast<scalar<descriptor_type> *>(detail::native_mem(ih, in_re_acc)) +
-                    offsets[0]),
-                reinterpret_cast<void *>(
-                    reinterpret_cast<scalar<descriptor_type> *>(detail::native_mem(ih, in_im_acc)) +
-                    offsets[0])
-            };
-            std::array<void *, 2> out_native{
-                reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
-                                             detail::native_mem(ih, out_re_acc)) +
-                                         offsets[1]),
-                reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
-                                             detail::native_mem(ih, out_im_acc)) +
-                                         offsets[1])
-            };
-            detail::execute_checked(func_name, plan, in_native.data(), out_native.data(), info);
-            detail::sync_checked(func_name, stream);
-        });
+                std::array<void *, 2> in_native{
+                    reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
+                                                 detail::native_mem(ih, in_re_acc)) +
+                                             offsets[0]),
+                    reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
+                                                 detail::native_mem(ih, in_im_acc)) +
+                                             offsets[0])
+                };
+                std::array<void *, 2> out_native{
+                    reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
+                                                 detail::native_mem(ih, out_re_acc)) +
+                                             offsets[1]),
+                    reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
+                                                 detail::native_mem(ih, out_im_acc)) +
+                                             offsets[1])
+                };
+                detail::execute_checked(func_name, plan, in_native.data(), out_native.data(), info);
+                detail::add_hip_event(ih, func_name, stream);
+            },
+            { sycl::ext::codeplay::experimental::property::host_task::manual_interop_sync() });
     });
 }
 
@@ -241,13 +253,16 @@ ONEMKL_EXPORT sycl::event compute_forward(descriptor_type &desc, fwd<descriptor_
         cgh.depends_on(deps);
         commit->depend_on_last_usm_workspace_event_if_rqd(cgh);
 
-        cgh.host_task([=](sycl::interop_handle ih) {
-            auto stream = detail::setup_stream(func_name, ih, info);
+        cgh.host_task(
+            [=](sycl::interop_handle ih) {
+                auto stream = detail::setup_stream(func_name, ih, info);
+                detail::wait_on_hip_events(stream);
 
-            void *inout_ptr = inout;
-            detail::execute_checked(func_name, plan, &inout_ptr, nullptr, info);
-            detail::sync_checked(func_name, stream);
-        });
+                void *inout_ptr = inout;
+                detail::execute_checked(func_name, plan, &inout_ptr, nullptr, info);
+                detail::add_hip_event(ih, func_name, stream);
+            },
+            { sycl::ext::codeplay::experimental::property::host_task::manual_interop_sync() });
     });
     commit->set_last_usm_workspace_event_if_rqd(sycl_event);
     return sycl_event;
@@ -274,13 +289,16 @@ ONEMKL_EXPORT sycl::event compute_forward(descriptor_type &desc, scalar<descript
     sycl::event sycl_event = queue.submit([&](sycl::handler &cgh) {
         cgh.depends_on(deps);
         commit->depend_on_last_usm_workspace_event_if_rqd(cgh);
-        cgh.host_task([=](sycl::interop_handle ih) {
-            auto stream = detail::setup_stream(func_name, ih, info);
+        cgh.host_task(
+            [=](sycl::interop_handle ih) {
+                auto stream = detail::setup_stream(func_name, ih, info);
+                detail::wait_on_hip_events(stream);
 
-            std::array<void *, 2> inout_native{ inout_re + offsets[0], inout_im + offsets[0] };
-            detail::execute_checked(func_name, plan, inout_native.data(), nullptr, info);
-            detail::sync_checked(func_name, stream);
-        });
+                std::array<void *, 2> inout_native{ inout_re + offsets[0], inout_im + offsets[0] };
+                detail::execute_checked(func_name, plan, inout_native.data(), nullptr, info);
+                detail::add_hip_event(ih, func_name, stream);
+            },
+            { sycl::ext::codeplay::experimental::property::host_task::manual_interop_sync() });
     });
     commit->set_last_usm_workspace_event_if_rqd(sycl_event);
     return sycl_event;
@@ -306,15 +324,18 @@ ONEMKL_EXPORT sycl::event compute_forward(descriptor_type &desc, fwd<descriptor_
         cgh.depends_on(deps);
         commit->depend_on_last_usm_workspace_event_if_rqd(cgh);
 
-        cgh.host_task([=](sycl::interop_handle ih) {
-            const std::string func_name = "compute_forward(desc, in, out, deps)";
-            auto stream = detail::setup_stream(func_name, ih, info);
+        cgh.host_task(
+            [=](sycl::interop_handle ih) {
+                const std::string func_name = "compute_forward(desc, in, out, deps)";
+                auto stream = detail::setup_stream(func_name, ih, info);
+                detail::wait_on_hip_events(stream);
 
-            void *in_ptr = in;
-            void *out_ptr = out;
-            detail::execute_checked(func_name, plan, &in_ptr, &out_ptr, info);
-            detail::sync_checked(func_name, stream);
-        });
+                void *in_ptr = in;
+                void *out_ptr = out;
+                detail::execute_checked(func_name, plan, &in_ptr, &out_ptr, info);
+                detail::add_hip_event(ih, func_name, stream);
+            },
+            { sycl::ext::codeplay::experimental::property::host_task::manual_interop_sync() });
     });
     commit->set_last_usm_workspace_event_if_rqd(sycl_event);
     return sycl_event;
@@ -337,16 +358,19 @@ ONEMKL_EXPORT sycl::event compute_forward(descriptor_type &desc, scalar<descript
         cgh.depends_on(deps);
         commit->depend_on_last_usm_workspace_event_if_rqd(cgh);
 
-        cgh.host_task([=](sycl::interop_handle ih) {
-            const std::string func_name =
-                "compute_forward(desc, in_re, in_im, out_re, out_im, deps)";
-            auto stream = detail::setup_stream(func_name, ih, info);
+        cgh.host_task(
+            [=](sycl::interop_handle ih) {
+                const std::string func_name =
+                    "compute_forward(desc, in_re, in_im, out_re, out_im, deps)";
+                auto stream = detail::setup_stream(func_name, ih, info);
+                detail::wait_on_hip_events(stream);
 
-            std::array<void *, 2> in_native{ in_re + offsets[0], in_im + offsets[0] };
-            std::array<void *, 2> out_native{ out_re + offsets[1], out_im + offsets[1] };
-            detail::execute_checked(func_name, plan, in_native.data(), out_native.data(), info);
-            detail::sync_checked(func_name, stream);
-        });
+                std::array<void *, 2> in_native{ in_re + offsets[0], in_im + offsets[0] };
+                std::array<void *, 2> out_native{ out_re + offsets[1], out_im + offsets[1] };
+                detail::execute_checked(func_name, plan, in_native.data(), out_native.data(), info);
+                detail::add_hip_event(ih, func_name, stream);
+            },
+            { sycl::ext::codeplay::experimental::property::host_task::manual_interop_sync() });
     });
     commit->set_last_usm_workspace_event_if_rqd(sycl_event);
     return sycl_event;
