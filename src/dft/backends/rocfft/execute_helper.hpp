@@ -75,8 +75,8 @@ inline hipStream_t setup_stream(const std::string &func, sycl::interop_handle &i
     return stream;
 }
 
-inline void wait_on_hip_events(hipStream_t stream) {
-    for (hipEvent e : ih.get_native_events<sycl::backend::ext_oneapi_hip>()) {
+inline void wait_on_hip_events(hipStream_t stream, const std::string &func) {
+    for (auto e : ih.get_native_events<sycl::backend::ext_oneapi_hip>()) {
         auto result = hipStreamWaitEvent(stream, e, 0);
         if (result != hipSuccess) {
             throw oneapi::mkl::exception(
@@ -87,8 +87,8 @@ inline void wait_on_hip_events(hipStream_t stream) {
 }
 
 inline void add_hip_event(sycl::interop_handle &ih, const std::string &func, hipStream_t stream) {
-    hipEvent e;
-    auto result_create = hipEventCreate(&e, CU_EVENT_DISABLE_TIMING);
+    hipEvent_t e;
+    auto result_create = hipEventCreate(&e);
     if (result_create != hipSuccess) {
         throw oneapi::mkl::exception("dft/backends/rocfft", func,
                                      "hipEventCreate returned " + std::to_string(result_create));

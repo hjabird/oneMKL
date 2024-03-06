@@ -84,7 +84,7 @@ ONEMKL_EXPORT void compute_forward(descriptor_type &desc,
         cgh.host_task(
             [=](sycl::interop_handle ih) {
                 auto stream = detail::setup_stream(func_name, ih, info);
-                detail::wait_on_hip_events(stream);
+                detail::wait_on_hip_events(stream, func_name);
 
                 auto inout_native = reinterpret_cast<void *>(
                     reinterpret_cast<fwd<descriptor_type> *>(detail::native_mem(ih, inout_acc)) +
@@ -122,7 +122,7 @@ ONEMKL_EXPORT void compute_forward(descriptor_type &desc,
         cgh.host_task(
             [=](sycl::interop_handle ih) {
                 auto stream = detail::setup_stream(func_name, ih, info);
-                detail::wait_on_hip_events(stream);
+                detail::wait_on_hip_events(stream, func_name);
 
                 std::array<void *, 2> inout_native{
                     reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
@@ -160,7 +160,7 @@ ONEMKL_EXPORT void compute_forward(descriptor_type &desc, sycl::buffer<fwd<descr
             [=](sycl::interop_handle ih) {
                 const std::string func_name = "compute_forward(desc, in, out)";
                 auto stream = detail::setup_stream(func_name, ih, info);
-                detail::wait_on_hip_events(stream);
+                detail::wait_on_hip_events(stream, func_name);
 
                 auto in_native = reinterpret_cast<void *>(
                     reinterpret_cast<fwd<descriptor_type> *>(detail::native_mem(ih, in_acc)) +
@@ -199,7 +199,7 @@ ONEMKL_EXPORT void compute_forward(descriptor_type &desc,
             [=](sycl::interop_handle ih) {
                 const std::string func_name = "compute_forward(desc, in_re, in_im, out_re, out_im)";
                 auto stream = detail::setup_stream(func_name, ih, info);
-                detail::wait_on_hip_events(stream);
+                detail::wait_on_hip_events(stream, func_name);
 
                 std::array<void *, 2> in_native{
                     reinterpret_cast<void *>(reinterpret_cast<scalar<descriptor_type> *>(
@@ -256,7 +256,7 @@ ONEMKL_EXPORT sycl::event compute_forward(descriptor_type &desc, fwd<descriptor_
         cgh.host_task(
             [=](sycl::interop_handle ih) {
                 auto stream = detail::setup_stream(func_name, ih, info);
-                detail::wait_on_hip_events(stream);
+                detail::wait_on_hip_events(stream, func_name);
 
                 void *inout_ptr = inout;
                 detail::execute_checked(func_name, plan, &inout_ptr, nullptr, info);
@@ -292,7 +292,7 @@ ONEMKL_EXPORT sycl::event compute_forward(descriptor_type &desc, scalar<descript
         cgh.host_task(
             [=](sycl::interop_handle ih) {
                 auto stream = detail::setup_stream(func_name, ih, info);
-                detail::wait_on_hip_events(stream);
+                detail::wait_on_hip_events(stream, func_name);
 
                 std::array<void *, 2> inout_native{ inout_re + offsets[0], inout_im + offsets[0] };
                 detail::execute_checked(func_name, plan, inout_native.data(), nullptr, info);
@@ -328,7 +328,7 @@ ONEMKL_EXPORT sycl::event compute_forward(descriptor_type &desc, fwd<descriptor_
             [=](sycl::interop_handle ih) {
                 const std::string func_name = "compute_forward(desc, in, out, deps)";
                 auto stream = detail::setup_stream(func_name, ih, info);
-                detail::wait_on_hip_events(stream);
+                detail::wait_on_hip_events(stream, func_name);
 
                 void *in_ptr = in;
                 void *out_ptr = out;
@@ -363,7 +363,7 @@ ONEMKL_EXPORT sycl::event compute_forward(descriptor_type &desc, scalar<descript
                 const std::string func_name =
                     "compute_forward(desc, in_re, in_im, out_re, out_im, deps)";
                 auto stream = detail::setup_stream(func_name, ih, info);
-                detail::wait_on_hip_events(stream);
+                detail::wait_on_hip_events(stream, func_name);
 
                 std::array<void *, 2> in_native{ in_re + offsets[0], in_im + offsets[0] };
                 std::array<void *, 2> out_native{ out_re + offsets[1], out_im + offsets[1] };
